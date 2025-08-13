@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAP ME IN! - Dashboard</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* TAP ME IN! Brand Colors */
+            --brand-yellow: #ffc914;    /* Accent - Golden Yellow */
+            --brand-navy: #345995;      /* Primary - Navy Blue */
+            --brand-red: #ff5964;       /* Alert/Action - Red */
+            
+            /* Extended Palette */
+            --brand-yellow-light: #fff4d6;
+            --brand-yellow-dark: #e6b000;
+            --brand-navy-light: #4a6ba5;
+            --brand-navy-dark: #243a5e;
+            --brand-navy-darker: #1a2844;
+            --brand-red-light: #ffe0e2;
+            
+            /* Applied Color System */
+            --primary-color: #345995;   /* Navy Blue as Primary */
+            --secondary-color: #ffc914;  /* Yellow as Secondary */
+            --accent-color: #ff5964;     /* Red as Accent */
+            
+            /* Backgrounds */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-dark: #345995;
+            --bg-light: #ffffff;
+            
+            /* Text Colors */
+            --text-primary: #345995;
+            --text-secondary: #5a7099;
+            --text-tertiary: #8a9bb8;
+            --text-on-navy: #ffffff;
+            --text-dark: #1a2844;
+            
+            /* UI Elements */
+            --border-color: rgba(52, 89, 149, 0.15);
+            --border-yellow: rgba(255, 201, 20, 0.3);
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+            --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.20);
+            --shadow-yellow: 0 10px 40px rgba(255, 201, 20, 0.15);
+            
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Theme Styles */
+        .theme-light {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .theme-dark {
+            background: var(--bg-dark);
+            color: var(--text-on-navy);
+        }
+
+        .theme-vibrant {
+            background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-dark) 100%);
+            color: white;
+        }
+
+        /* Custom Navbar */
+        .navbar-custom {
+            background: white;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--brand-navy);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .theme-dark .navbar-custom {
+            background: var(--brand-navy-darker);
+            border-bottom: 3px solid var(--brand-yellow);
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: var(--brand-navy);
+            letter-spacing: -1px;
+        }
+
+        .logo .tap {
+            color: var(--brand-navy);
+        }
+
+        .logo .me {
+            color: var(--brand-yellow);
+            text-shadow: 2px 2px 0px var(--brand-navy);
+        }
+
+        .logo .in {
+            color: var(--brand-navy);
+        }
+
+        .logo .exclamation {
+            color: var(--brand-red);
+            font-weight: 900;
+        }
+
+        .theme-dark .logo .tap,
+        .theme-dark .logo .in {
+            color: white;
+        }
+
+        .theme-dark .logo .me {
+            color: var(--brand-yellow);
+            text-shadow: 2px 2px 0px black;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            height: calc(100vh - 76px);
+            position: fixed;
+            left: 0;
+            top: 76px;
+            background: white;
+            border-right: 2px solid var(--border-color);
+            padding: 2rem 1rem;
+            overflow-y: auto;
+            transition: var(--transition);
+        }
+
+        .theme-dark .sidebar {
+            background: var(--brand-navy-darker);
+            border-right: 2px solid rgba(255, 201, 20, 0.2);
+        }
+
+        .sidebar-item {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .theme-dark .sidebar-item {
+            color: var(--text-on-navy);
+        }
+
+        .sidebar-item:hover {
+            background: rgba(52, 89, 149, 0.08);
+            transform: translateX(4px);
+            color: var(--brand-navy);
+        }
+
+        .theme-dark .sidebar-item:hover {
+            background: rgba(255, 201, 20, 0.15);
+            color: var(--brand-yellow);
+        }
+
+        .sidebar-item.active {
+            background: var(--brand-navy);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-item.active::after {
+            content: '';
+            position: absolute;
+            right: -1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 70%;
+            background: var(--brand-yellow);
+            border-radius: 2px;
+        }
+
+        .theme-dark .sidebar-item.active {
+            background: var(--brand-navy);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: calc(100vh - 76px);
+            background: #fafbfc;
+        }
+
+        .theme-dark .main-content {
+            background: var(--brand-navy-dark);
+        }
+
+        /* Stat Cards */
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-dark .stat-card {
+            background: var(--brand-navy-darker);
+            border: 1px solid rgba(255, 201, 20, 0.2);
+            color: white;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--brand-navy);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--brand-navy);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            color: var(--brand-navy);
+        }
+
+        .theme-dark .stat-value {
+            color: white;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .theme-dark .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .stat-change.negative {
+            color: var(--brand-red);
+            background: var(--brand-red-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        /* Stat Icons with Yellow Accent */
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: var(--brand-yellow-light);
+            color: var(--brand-navy);
+            border: 2px solid var(--brand-yellow);
+        }
+
+        /* Interview Helper Bubble */
+        .interview-helper {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            color: var(--brand-navy);
+            padding: 1rem 1.5rem;
+            border-radius: 24px;
+            border: 3px solid var(--brand-navy);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            animation: float 3s ease-in-out infinite;
+            z-index: 999;
+            max-width: 320px;
+        }
+
+        .interview-helper::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            height: 50%;
+            background: var(--brand-yellow);
+            border-radius: 24px 24px 0 0;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .interview-helper h6 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--brand-navy);
+        }
+
+        .interview-helper .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .interview-helper .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            border-radius: 12px;
+            background: var(--brand-navy);
+            border: 2px solid var(--brand-navy);
+            color: white;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .interview-helper .btn:hover {
+            background: white;
+            color: var(--brand-navy);
+            transform: scale(1.05);
+        }
+
+        /* Category Cards */
+        .category-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-dark .category-card {
+            background: var(--brand-navy-darker);
+            border: 1px solid rgba(255, 201, 20, 0.2);
+        }
+
+        .category-card:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--brand-navy);
+        }
+
+        .category-card:hover .category-icon {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--brand-navy), var(--brand-navy-light));
+            color: white;
+            border-radius: 12px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .category-icon::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 20px;
+            height: 20px;
+            background: var(--brand-yellow);
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .category-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--brand-navy);
+        }
+
+        .theme-dark .category-name {
+            color: white;
+        }
+
+        .category-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .category-stats .stat-value {
+            font-size: 1.25rem;
+            color: var(--brand-navy);
+        }
+
+        .category-stats .growth {
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-dark .activity-feed {
+            background: var(--brand-navy-darker);
+            border: 1px solid rgba(255, 201, 20, 0.2);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: var(--brand-red);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .activity-item:hover {
+            padding-left: 1rem;
+            background: linear-gradient(90deg, rgba(52, 89, 149, 0.05), transparent);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .activity-icon.tap {
+            background: var(--brand-navy);
+            color: white;
+        }
+
+        .activity-icon.milestone {
+            background: var(--brand-yellow-light);
+            color: var(--brand-navy);
+            border: 2px solid var(--brand-yellow);
+        }
+
+        .activity-icon.interview {
+            background: var(--brand-red-light);
+            color: var(--brand-red);
+            border: 2px solid var(--brand-red);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            height: 300px;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-dark .chart-container {
+            background: var(--brand-navy-darker);
+            border: 1px solid rgba(255, 201, 20, 0.2);
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            height: 200px;
+            gap: 0.5rem;
+            padding-top: 2rem;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--brand-navy);
+            border-radius: 4px 4px 0 0;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .chart-bar:hover {
+            transform: scaleY(1.05);
+        }
+
+        .chart-bar:hover::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--brand-yellow);
+            border-radius: 50%;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 998;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .interview-helper {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 3px solid var(--brand-navy);
+            padding: 0.5rem;
+            z-index: 997;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-dark .mobile-nav {
+            background: var(--brand-navy-darker);
+            border-top: 3px solid var(--brand-yellow);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-nav {
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .main-content {
+                padding-bottom: 80px;
+            }
+        }
+
+        .mobile-nav-item {
+            padding: 0.5rem;
+            text-align: center;
+            color: var(--brand-navy);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--brand-red);
+        }
+
+        .theme-dark .mobile-nav-item {
+            color: white;
+        }
+
+        .theme-dark .mobile-nav-item.active {
+            color: var(--brand-yellow);
+        }
+
+        /* Additional Branded Elements */
+        .btn-primary {
+            background: var(--brand-navy);
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background: var(--brand-navy-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 2px solid var(--brand-navy);
+            color: var(--brand-navy);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            background: var(--brand-navy);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .badge {
+            background: var(--brand-red) !important;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .btn-outline-secondary {
+            border: 2px solid var(--brand-navy);
+            color: var(--brand-navy);
+            background: white;
+            font-weight: 600;
+        }
+
+        .btn-outline-secondary:hover,
+        .btn-outline-secondary.active {
+            background: var(--brand-navy);
+            color: white;
+            border-color: var(--brand-navy);
+        }
+
+        /* Search Input */
+        .search-input {
+            border: 2px solid var(--border-color) !important;
+            color: var(--brand-navy);
+            font-weight: 500;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(52, 89, 149, 0.1);
+            border-color: var(--brand-navy) !important;
+        }
+
+        .input-group-text {
+            background: white !important;
+            border: 2px solid var(--border-color) !important;
+            border-right: none !important;
+            color: var(--brand-navy);
+        }
+
+        /* Notification Bell */
+        .notification-dot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--brand-red);
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        /* Profile Dropdown */
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--brand-navy);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 2px solid var(--brand-yellow);
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-navy);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--brand-navy-dark);
+        }
+        .sidebar {
+            width: 260px;
+            height: calc(100vh - 76px);
+            position: fixed;
+            left: 0;
+            top: 76px;
+            background: var(--bg-secondary);
+            border-right: 2px solid var(--border-color);
+            padding: 2rem 1rem;
+            overflow-y: auto;
+            transition: var(--transition);
+        }
+
+        .theme-dark .sidebar {
+            background: var(--brand-navy-darker);
+            border-right: 2px solid rgba(255, 201, 20, 0.2);
+        }
+
+        .sidebar-item {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .theme-dark .sidebar-item {
+            color: var(--text-on-navy);
+        }
+
+        .sidebar-item:hover {
+            background: rgba(255, 201, 20, 0.15);
+            transform: translateX(4px);
+            color: var(--brand-navy);
+        }
+
+        .theme-dark .sidebar-item:hover {
+            background: rgba(255, 201, 20, 0.15);
+            color: var(--brand-yellow);
+        }
+
+        .sidebar-item.active {
+            background: var(--brand-navy);
+            color: white;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+        }
+
+        .theme-dark .sidebar-item.active {
+            background: var(--brand-yellow);
+            color: var(--brand-navy);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: calc(100vh - 76px);
+        }
+
+        /* Stat Cards */
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-dark .stat-card {
+            background: var(--brand-navy-dark);
+            border: 2px solid rgba(255, 201, 20, 0.2);
+            color: white;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--brand-yellow);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--brand-yellow);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            color: var(--brand-navy);
+        }
+
+        .theme-dark .stat-value {
+            color: var(--brand-yellow);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .theme-dark .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            color: var(--brand-navy);
+            background: rgba(255, 201, 20, 0.2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .theme-dark .stat-change.positive {
+            color: var(--brand-yellow);
+            background: rgba(255, 201, 20, 0.15);
+        }
+
+        .stat-change.negative {
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        /* Interview Helper Bubble */
+        .interview-helper {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--brand-navy);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 24px;
+            border: 3px solid var(--brand-yellow);
+            box-shadow: var(--shadow-yellow);
+            animation: float 3s ease-in-out infinite;
+            z-index: 999;
+            max-width: 320px;
+        }
+
+        .theme-dark .interview-helper {
+            background: var(--brand-yellow);
+            color: var(--brand-navy);
+            border: 3px solid var(--brand-navy);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .interview-helper h6 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .interview-helper .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .interview-helper .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .theme-dark .interview-helper .btn {
+            background: rgba(52, 89, 149, 0.2);
+            border: 1px solid var(--brand-navy);
+            color: var(--brand-navy);
+        }
+
+        .interview-helper .btn:hover {
+            background: var(--brand-yellow);
+            color: var(--brand-navy);
+            transform: scale(1.05);
+        }
+
+        .theme-dark .interview-helper .btn:hover {
+            background: var(--brand-navy);
+            color: white;
+        }
+
+        /* Category Cards */
+        .category-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-dark .category-card {
+            background: var(--brand-navy-dark);
+            border: 2px solid rgba(255, 201, 20, 0.2);
+        }
+
+        .category-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            background: linear-gradient(180deg, transparent, rgba(255, 201, 20, 0.1));
+            transition: height 0.3s ease;
+        }
+
+        .category-card:hover::after {
+            height: 100%;
+        }
+
+        .category-card:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--brand-yellow);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            background: var(--brand-yellow);
+            border-radius: 12px;
+        }
+
+        .theme-dark .category-icon {
+            background: var(--brand-yellow);
+            color: var(--brand-navy);
+        }
+
+        .category-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--brand-navy);
+        }
+
+        .theme-dark .category-name {
+            color: var(--brand-yellow);
+        }
+
+        .category-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .theme-dark .category-stats {
+            border-top: 2px solid rgba(255, 201, 20, 0.2);
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-dark .activity-feed {
+            background: var(--brand-navy-dark);
+            border: 2px solid rgba(255, 201, 20, 0.2);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .theme-dark .activity-item {
+            border-bottom: 1px solid rgba(255, 201, 20, 0.1);
+        }
+
+        .activity-item:hover {
+            padding-left: 1rem;
+            background: linear-gradient(90deg, rgba(255, 201, 20, 0.05), transparent);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .activity-icon.tap {
+            background: rgba(255, 201, 20, 0.2);
+            color: var(--brand-navy);
+            border: 2px solid var(--brand-yellow);
+        }
+
+        .activity-icon.milestone {
+            background: rgba(52, 89, 149, 0.1);
+            color: var(--brand-navy);
+            border: 2px solid var(--brand-navy);
+        }
+
+        .theme-dark .activity-icon.milestone {
+            background: rgba(255, 201, 20, 0.1);
+            color: var(--brand-yellow);
+            border: 2px solid var(--brand-yellow);
+        }
+
+        .activity-icon.interview {
+            background: var(--brand-yellow);
+            color: var(--brand-navy);
+            border: 2px solid var(--brand-navy);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 2px solid var(--border-color);
+            height: 300px;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-dark .chart-container {
+            background: var(--brand-navy-dark);
+            border: 2px solid rgba(255, 201, 20, 0.2);
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            height: 200px;
+            gap: 0.5rem;
+            padding-top: 2rem;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--brand-navy);
+            border-radius: 4px 4px 0 0;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .chart-bar:nth-child(odd) {
+            background: var(--brand-yellow);
+        }
+
+        .theme-dark .chart-bar {
+            background: var(--brand-yellow);
+        }
+
+        .theme-dark .chart-bar:nth-child(odd) {
+            background: var(--brand-navy-light);
+        }
+
+        .chart-bar:hover {
+            transform: scaleY(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 998;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .interview-helper {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+            }
+
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--brand-yellow);
+            border-top: 3px solid var(--brand-navy);
+            padding: 0.5rem;
+            z-index: 997;
+        }
+
+        .theme-dark .mobile-nav {
+            background: var(--brand-navy);
+            border-top: 3px solid var(--brand-yellow);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-nav {
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .main-content {
+                padding-bottom: 80px;
+            }
+        }
+
+        .mobile-nav-item {
+            padding: 0.5rem;
+            text-align: center;
+            color: var(--brand-navy);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .theme-dark .mobile-nav-item {
+            color: var(--brand-yellow);
+        }
+
+        .mobile-nav-item:hover,
+        .mobile-nav-item.active {
+            transform: scale(1.1);
+        }
+
+        /* Additional Branded Elements */
+        .btn-primary {
+            background: var(--brand-navy);
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background: var(--brand-navy-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--brand-yellow);
+            border: none;
+            color: var(--brand-navy);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            background: var(--brand-yellow-dark);
+            transform: translateY(-2px);
+        }
+
+        .badge {
+            background: var(--brand-yellow) !important;
+            color: var(--brand-navy);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .btn-outline-secondary {
+            border: 2px solid var(--brand-navy);
+            color: var(--brand-navy);
+            background: transparent;
+            font-weight: 600;
+        }
+
+        .btn-outline-secondary:hover,
+        .btn-outline-secondary.active {
+            background: var(--brand-navy);
+            color: white;
+            border-color: var(--brand-navy);
+        }
+
+        .theme-dark .btn-outline-secondary {
+            border: 2px solid var(--brand-yellow);
+            color: var(--brand-yellow);
+        }
+
+        .theme-dark .btn-outline-secondary:hover,
+        .theme-dark .btn-outline-secondary.active {
+            background: var(--brand-yellow);
+            color: var(--brand-navy);
+        }
+
+        /* Search Input */
+        .search-input {
+            border: 2px solid var(--brand-navy) !important;
+            color: var(--brand-navy);
+            font-weight: 500;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(255, 201, 20, 0.3);
+            border-color: var(--brand-yellow) !important;
+        }
+
+        .input-group-text {
+            background: white !important;
+            border: 2px solid var(--brand-navy) !important;
+            border-right: none !important;
+            color: var(--brand-navy);
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-navy);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--brand-yellow);
+        }
+
+        /* TAP ME IN! Specific Styles */
+        .tap-highlight {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: var(--brand-yellow);
+            color: var(--brand-navy);
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        .exclamation-mark {
+            color: var(--brand-navy);
+            font-weight: 900;
+        }
+
+        .theme-dark .exclamation-mark {
+            color: var(--brand-yellow);
+        }
+    </style>
+</head>
+<body class="theme-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-custom">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-link d-md-none me-3" onclick="toggleSidebar()">
+                    <i class="bi bi-list fs-4" style="color: var(--brand-navy);"></i>
+                </button>
+                <span class="logo">
+                    <span class="tap">TAP</span>
+                    <span class="me">ME</span>
+                    <span class="in">IN</span><span class="exclamation">!</span>
+                </span>
+            </div>
+</head>
+<body class="theme-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-custom">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-link d-md-none me-3" onclick="toggleSidebar()">
+                    <i class="bi bi-list fs-4" style="color: var(--brand-navy);"></i>
+                </button>
+                <span class="logo">NFC Hub</span>
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+                <div class="input-group d-none d-md-flex" style="width: 300px;">
+                    <span class="input-group-text bg-transparent border-end-0" style="border: 2px solid var(--brand-aqua); border-right: none;">
+                        <i class="bi bi-search" style="color: var(--brand-navy);"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0" placeholder="Search..." style="border: 2px solid var(--brand-aqua); border-left: none;">
+                </div>
+                
+                <button class="btn btn-link position-relative">
+                    <i class="bi bi-bell fs-5" style="color: var(--brand-navy);"></i>
+                    <span class="notification-dot"></span>
+                </button>
+                
+                <div class="dropdown">
+                    <button class="btn btn-link dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+                        <div class="profile-avatar">JD</div>
+                        <span class="d-none d-md-inline" style="color: var(--brand-navy); font-weight: 600;">John D.</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" onclick="switchView('profile')">Profile</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="switchView('settings')">Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" onclick="toggleTheme()">Toggle Theme</a></li>
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="mb-4">
+            <small class="text-uppercase" style="color: var(--text-secondary); font-weight: 700; letter-spacing: 1px;">Main</small>
+        </div>
+        
+        <a href="#" class="sidebar-item active" onclick="switchView('dashboard')">
+            <i class="bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+        </a>
+        
+        <a href="#" class="sidebar-item" onclick="switchView('cards')">
+            <i class="bi bi-credit-card"></i>
+            <span>My Cards</span>
+        </a>
+        
+        <a href="#" class="sidebar-item" onclick="switchView('analytics')">
+            <i class="bi bi-graph-up"></i>
+            <span>Analytics</span>
+        </a>
+        
+        <a href="#" class="sidebar-item" onclick="switchView('categories')">
+            <i class="bi bi-collection"></i>
+            <span>Categories</span>
+        </a>
+        
+        <a href="#" class="sidebar-item" onclick="switchView('career')">
+            <i class="bi bi-briefcase"></i>
+            <span>Career Center</span>
+        </a>
+        
+        <div class="mb-4 mt-4">
+            <small class="text-uppercase" style="color: var(--text-secondary); font-weight: 700; letter-spacing: 1px;">Account</small>
+        </div>
+        
+        <a href="#" class="sidebar-item" onclick="switchView('settings')">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+        
+        <a href="#" class="sidebar-item">
+            <i class="bi bi-gem"></i>
+            <span>Upgrade</span>
+        </a>
+        
+        <a href="#" class="sidebar-item">
+            <i class="bi bi-question-circle"></i>
+            <span>Help</span>
+        </a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard View -->
+        <div id="dashboard-view" class="view-content">
+            <div class="mb-4 fade-in">
+                <h1 class="display-4 fw-bold mb-2" style="color: var(--brand-navy);">Good morning, John! 👋</h1>
+                <p class="text-muted">Here's your network performance today</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <div class="stat-label">Total Taps</div>
+                                <div class="stat-value">12,847</div>
+                                <div class="stat-change positive">
+                                    <i class="bi bi-arrow-up"></i> 12% from last month
+                                </div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="bi bi-hand-index"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <div class="stat-label">Active Cards</div>
+                                <div class="stat-value">24</div>
+                                <div class="stat-change positive">
+                                    <i class="bi bi-plus"></i> 2 new this week
+                                </div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="bi bi-credit-card"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <div class="stat-label">Conversion Rate</div>
+                                <div class="stat-value">89%</div>
+                                <div class="stat-change positive">
+                                    <i class="bi bi-arrow-up"></i> 3.2% improvement
+                                </div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="bi bi-graph-up-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <div class="stat-label">New Today</div>
+                                <div class="stat-value">324</div>
+                                <div class="stat-change positive">
+                                    <i class="bi bi-arrow-up"></i> 18 more
+                                </div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="bi bi-lightning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Section -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="fw-bold" style="color: var(--brand-navy);">Your Categories</h3>
+                    <a href="#" class="text-decoration-none" style="color: var(--brand-coral); font-weight: 600;" onclick="switchView('categories')">View All →</a>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="category-card" onclick="showCategoryDetails('business')">
+                            <div class="category-icon">💼</div>
+                            <div class="category-name">Business Cards</div>
+                            <div class="text-muted small mb-3">Professional networking</div>
+                            <div class="category-stats">
+                                <div>
+                                    <div class="fw-bold" style="color: var(--brand-navy);">3</div>
+                                    <div class="small text-muted">Cards</div>
+                                </div>
+                                <div>
+                                    <div class="fw-bold" style="color: var(--brand-navy);">4,892</div>
+                                    <div class="small text-muted">Taps</div>
+                                </div>
+                                <div>
+                                    <div class="fw-bold growth">↑12%</div>
+                                    <div class="small text-muted">Today</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="category-card" onclick="showCategoryDetails('music')">
+                            <div class="category-icon">🎵</div>
+                            <div class="category-name">Music Shares</div>
+                            <div class="text-muted small mb-3">Spotify, Apple Music</div>
+                            <div class="category-stats">
+                                <div>
+                                    <div class="fw-bold" style="color: var(--brand-navy);">8</div>
+                                    <div class="small text-muted">Cards</div>
+                                </div>
+                                <div>
+                                    <div class="fw-bold" style="color: var(--brand-navy);">2,341</div>
+                                    <div class="small text-muted">Taps</div>
+                                </div>
+                                <div>
+                                    <div class="fw-bold growth">↑8%</div>
+                                    <div class="small text-muted">Today</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="category-card" onclick="showCategoryDetails('social')">
+                            <div class="category-icon">🔗</div>
+                            <div class="category-name">Social Links</div>
+                            <div class="text-muted small mb-3">Instagram, LinkedIn</div>
+                            <div class="category-stats">
+                                <div>
+                                    <div class="fw-bold" style="color: var(--brand-navy);">5</div>
+                                    <div class="small text-muted">Cards</div>
+                                </div>
+                                <div>
+                                    <div class="fw-bold" style="color: var(--brand-navy);">5,614</div>
+                                    <div class="small text-muted">Taps</div>
+                                </div>
+                                <div>
+                                    <div class="fw-bold growth">↑23%</div>
+                                    <div class="small text-muted">Today</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="category-card" style="border: 2px dashed var(--brand-navy); background: rgba(52, 89, 149, 0.02);">
+                            <div class="text-center py-3">
+                                <div class="category-icon" style="background: transparent; border: 2px dashed var(--brand-navy); color: var(--brand-navy);">
+                                    <span style="font-size: 2rem;">+</span>
+                                </div>
+                                <div class="fw-bold" style="color: var(--brand-navy); margin-top: 1rem;">Add New Category</div>
+                                <div class="small" style="color: var(--text-secondary);">Create custom group</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Feed & Chart -->
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="chart-container">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold mb-0" style="color: var(--brand-navy);">Weekly Analytics</h5>
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-outline-secondary">Day</button>
+                                <button class="btn btn-outline-secondary active">Week</button>
+                                <button class="btn btn-outline-secondary">Month</button>
+                            </div>
+                        </div>
+                        <div class="chart-bars">
+                            <div class="chart-bar" style="height: 60%;"></div>
+                            <div class="chart-bar" style="height: 80%;"></div>
+                            <div class="chart-bar" style="height: 45%;"></div>
+                            <div class="chart-bar" style="height: 90%;"></div>
+                            <div class="chart-bar" style="height: 70%;"></div>
+                            <div class="chart-bar" style="height: 85%;"></div>
+                            <div class="chart-bar" style="height: 65%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="activity-feed">
+                        <div class="activity-header">
+                            <h5 class="fw-bold mb-0" style="color: var(--brand-navy);">Live Activity</h5>
+                            <span class="live-indicator">
+                                <span style="display: inline-block; width: 8px; height: 8px; background: white; border-radius: 50%;"></span>
+                                LIVE
+                            </span>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon tap">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">New Tap: Business Card #2</div>
+                                <div class="small text-muted">San Francisco, CA • iPhone 15 Pro</div>
+                            </div>
+                            <div class="small text-muted">2m ago</div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon milestone">
+                                <i class="bi bi-music-note"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">Music Share: Spotify Profile</div>
+                                <div class="small text-muted">New York, NY • Desktop Chrome</div>
+                            </div>
+                            <div class="small text-muted">5m ago</div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: rgba(52, 89, 149, 0.1); color: var(--brand-navy); border: 2px solid var(--brand-navy);">
+                                <i class="bi bi-trophy"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">Milestone: 5,000 Total Taps!</div>
+                                <div class="small text-muted">Business Cards category</div>
+                            </div>
+                            <div class="small text-muted">1h ago</div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon interview">
+                                <i class="bi bi-briefcase"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">Interview Reminder</div>
+                                <div class="small text-muted">TechCorp follow-up due</div>
+                            </div>
+                            <div class="small text-muted">2h ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Views (placeholder) -->
+        <div id="categories-view" class="view-content" style="display: none;">
+            <h2 style="color: var(--brand-navy);">Categories</h2>
+            <p>Category management interface would go here</p>
+        </div>
+
+        <div id="cards-view" class="view-content" style="display: none;">
+            <h2 style="color: var(--brand-navy);">My Cards</h2>
+            <p>Card management interface would go here</p>
+        </div>
+
+        <div id="analytics-view" class="view-content" style="display: none;">
+            <h2 style="color: var(--brand-navy);">Analytics</h2>
+            <p>Detailed analytics dashboard would go here</p>
+        </div>
+
+        <div id="career-view" class="view-content" style="display: none;">
+            <h2 style="color: var(--brand-navy);">Career Center</h2>
+            <p>Interview tracking and follow-up system would go here</p>
+        </div>
+
+        <div id="settings-view" class="view-content" style="display: none;">
+            <h2 style="color: var(--brand-navy);">Settings</h2>
+            <p>Account settings would go here</p>
+        </div>
+
+        <div id="profile-view" class="view-content" style="display: none;">
+            <h2 style="color: var(--brand-navy);">Profile</h2>
+            <p>User profile would go here</p>
+        </div>
+    </main>
+
+    <!-- Interview Helper Bubble -->
+    <div class="interview-helper" id="interviewHelper">
+        <button class="btn-close btn-close-white position-absolute top-0 end-0 m-2" onclick="dismissHelper()"></button>
+        <h6>💼 Got an interview?</h6>
+        <p class="small mb-2">I noticed you had 3 professional card taps this week. Any callbacks?</p>
+        <div class="btn-group">
+            <button class="btn btn-sm" onclick="handleInterview('yes')">Yes, callback!</button>
+            <button class="btn btn-sm" onclick="handleInterview('scheduled')">Scheduled</button>
+            <button class="btn btn-sm" onclick="handleInterview('later')">Ask later</button>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-item active" onclick="switchView('dashboard')">
+            <i class="bi bi-house-door fs-5"></i>
+            <div class="small">Home</div>
+        </div>
+        <div class="mobile-nav-item" onclick="switchView('analytics')">
+            <i class="bi bi-graph-up fs-5"></i>
+            <div class="small">Analytics</div>
+        </div>
+        <div class="mobile-nav-item" onclick="switchView('cards')">
+            <i class="bi bi-credit-card fs-5"></i>
+            <div class="small">Cards</div>
+        </div>
+        <div class="mobile-nav-item" onclick="switchView('career')">
+            <i class="bi bi-briefcase fs-5"></i>
+            <div class="small">Career</div>
+        </div>
+        <div class="mobile-nav-item" onclick="switchView('settings')">
+            <i class="bi bi-gear fs-5"></i>
+            <div class="small">Settings</div>
+        </div>
+    </nav>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // View Switching
+        function switchView(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view-content').forEach(view => {
+                view.style.display = 'none';
+            });
+            
+            // Show selected view
+            const selectedView = document.getElementById(viewName + '-view');
+            if (selectedView) {
+                selectedView.style.display = 'block';
+                selectedView.classList.add('fade-in');
+            }
+            
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.sidebar-item')?.classList.add('active');
+            
+            // Update mobile nav active state
+            document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Close mobile sidebar
+            document.getElementById('sidebar').classList.remove('show');
+        }
+
+        // Toggle Sidebar (Mobile)
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+
+        // Toggle Theme
+        function toggleTheme() {
+            const body = document.body;
+            if (body.classList.contains('theme-light')) {
+                body.classList.remove('theme-light');
+                body.classList.add('theme-dark');
+            } else if (body.classList.contains('theme-dark')) {
+                body.classList.remove('theme-dark');
+                body.classList.add('theme-vibrant');
+            } else {
+                body.classList.remove('theme-vibrant');
+                body.classList.add('theme-light');
+            }
+        }
+
+        // Interview Helper Functions
+        function dismissHelper() {
+            document.getElementById('interviewHelper').style.display = 'none';
+        }
+
+        function handleInterview(response) {
+            if (response === 'yes') {
+                alert('Great! Let me help you schedule a follow-up reminder.');
+            } else if (response === 'scheduled') {
+                alert('Congratulations! I\'ll help you prepare for your interview.');
+            } else {
+                dismissHelper();
+            }
+        }
+
+        // Show Category Details
+        function showCategoryDetails(category) {
+            alert(`Showing details for ${category} category. This would navigate to a detailed view with heat maps, individual card performance, and analytics.`);
+        }
+
+        // Simulate real-time updates
+        setInterval(() => {
+            const stats = document.querySelectorAll('.stat-value');
+            if (stats.length > 0) {
+                const randomStat = stats[Math.floor(Math.random() * stats.length)];
+                const currentValue = parseInt(randomStat.textContent.replace(/,/g, ''));
+                const newValue = currentValue + Math.floor(Math.random() * 5);
+                randomStat.textContent = newValue.toLocaleString();
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
