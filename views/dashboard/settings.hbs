@@ -1,0 +1,214 @@
+{{!-- Settings Page --}}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-none d-md-block bg-primary sidebar">
+            <div class="position-sticky pt-3">
+                <div class="d-flex align-items-center mb-4 text-white">
+                    <i class="fas fa-credit-card fa-2x me-2"></i>
+                    <h5 class="mb-0">TAP ME IN!</h5>
+                </div>
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard/cards">
+                            <i class="fas fa-credit-card me-2"></i>My Cards
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard/profiles">
+                            <i class="fas fa-user-circle me-2"></i>Profiles
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard/analytics">
+                            <i class="fas fa-chart-line me-2"></i>Analytics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard/subscription">
+                            <i class="fas fa-crown me-2"></i>Subscription
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard/support">
+                            <i class="fas fa-life-ring me-2"></i>Support
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white active bg-warning" href="/dashboard/settings">
+                            <i class="fas fa-cog me-2"></i>Settings
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2 text-primary">
+                    <i class="fas fa-cog me-2"></i>Account Settings
+                </h1>
+            </div>
+            
+            <div class="row">
+                <!-- Profile Settings -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-user me-2"></i>Profile Information</h5>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" value="{{user.firstName}}" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" value="{{user.lastName}}" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" value="{{user.email}}" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="companyName" class="form-label">Company</label>
+                                    <input type="text" class="form-control" id="companyName" value="{{user.companyName}}" disabled>
+                                </div>
+                                <button type="button" class="btn btn-primary" disabled>
+                                    <i class="fas fa-save me-2"></i>Save Changes
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security Settings -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Security</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="text-muted me-3">••••••••••••</span>
+                                    <button class="btn btn-sm btn-outline-primary" disabled>
+                                        Change Password
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Two-Factor Authentication</label>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-danger me-3">Disabled</span>
+                                    <button class="btn btn-sm btn-outline-success" disabled>
+                                        Enable 2FA
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Account Status</label>
+                                <div>
+                                    <span class="badge {{#if user.emailVerified}}bg-success{{else}}bg-warning{{/if}}">
+                                        {{#if user.emailVerified}}Verified{{else}}Unverified{{/if}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notification Settings -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-bell me-2"></i>Notifications</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="emailNotifications" checked disabled>
+                                <label class="form-check-label" for="emailNotifications">
+                                    Email Notifications
+                                </label>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="tapAlerts" checked disabled>
+                                <label class="form-check-label" for="tapAlerts">
+                                    Tap Alerts
+                                </label>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="weeklyReports" disabled>
+                                <label class="form-check-label" for="weeklyReports">
+                                    Weekly Reports
+                                </label>
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" id="marketingEmails" disabled>
+                                <label class="form-check-label" for="marketingEmails">
+                                    Marketing Emails
+                                </label>
+                            </div>
+                            <button type="button" class="btn btn-info" disabled>
+                                <i class="fas fa-save me-2"></i>Update Preferences
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Danger Zone -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Danger Zone</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6>Export Account Data</h6>
+                                <p class="text-muted small">Download all your account data in JSON format.</p>
+                                <button class="btn btn-outline-secondary btn-sm" disabled>
+                                    <i class="fas fa-download me-2"></i>Export Data
+                                </button>
+                            </div>
+                            <hr>
+                            <div class="mb-3">
+                                <h6>Delete Account</h6>
+                                <p class="text-muted small">Permanently delete your account and all associated data. This action cannot be undone.</p>
+                                <button class="btn btn-danger btn-sm" disabled>
+                                    <i class="fas fa-trash me-2"></i>Delete Account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Coming Soon Notice -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Settings Management Coming Soon!</strong> 
+                        Full account management features will be available in the next update. 
+                        Contact support for immediate assistance with account changes.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="/dashboard" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </main>
+    </div>
+</div>

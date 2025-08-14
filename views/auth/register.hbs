@@ -1,0 +1,316 @@
+{{!-- Registration Page with TAP ME IN! Branding --}}
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Left Side - Branding -->
+        <div class="col-md-6 d-none d-md-flex flex-column justify-content-center align-items-center" style="background: var(--brand-navy);">
+            <div class="text-center text-white">
+                <img src="/images/tmi-logo-single.png" alt="TAP ME IN! Logo" class="mb-4" style="max-width: 120px;">
+                <h1 class="display-4 fw-bold mb-3">TAP ME IN!</h1>
+                <p class="lead mb-4">Join thousands of professionals already using smart NFC cards</p>
+                
+                <!-- Features List -->
+                <div class="mt-5">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-check-circle fa-lg me-3"></i>
+                        <span>Dynamic profile updates in real-time</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-check-circle fa-lg me-3"></i>
+                        <span>Detailed analytics and insights</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-check-circle fa-lg me-3"></i>
+                        <span>Multiple redirect profiles per card</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-check-circle fa-lg me-3"></i>
+                        <span>Professional networking tools</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Side - Registration Form -->
+        <div class="col-md-6 d-flex flex-column justify-content-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        
+                        <!-- Mobile Brand Header -->
+                        <div class="text-center d-md-none mb-4">
+                            <img src="/images/tmi-logo-single.png" alt="TAP ME IN! Logo" class="mb-3" style="max-width: 80px;">
+                            <div class="logo mb-3">
+                                <span class="tap">TAP</span>
+                                <span class="me">ME</span>
+                                <span class="in">IN</span><span class="exclamation">!</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card shadow-lg border-0">
+                            <div class="card-body p-5">
+                                <h3 class="card-title text-center mb-4" style="color: var(--brand-navy);">Create Your Account</h3>
+                                <p class="text-muted text-center mb-4">Start your 14-day free trial today</p>
+                                
+                                {{#if error}}
+                                    <div class="alert alert-danger" role="alert">
+                                        <i class="bi bi-exclamation-triangle me-2"></i>{{error}}
+                                    </div>
+                                {{/if}}
+                                
+                                <form action="/auth/register" method="POST" id="registerForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="firstName" class="form-label">First Name</label>
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="firstName" 
+                                                   name="firstName" 
+                                                   placeholder="John"
+                                                   value="{{firstName}}"
+                                                   required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="lastName" class="form-label">Last Name</label>
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="lastName" 
+                                                   name="lastName" 
+                                                   placeholder="Doe"
+                                                   value="{{lastName}}"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--brand-yellow-light); border-color: var(--border-color);">
+                                                <i class="bi bi-envelope" style="color: var(--brand-navy);"></i>
+                                            </span>
+                                            <input type="email" 
+                                                   class="form-control" 
+                                                   id="email" 
+                                                   name="email" 
+                                                   placeholder="john.doe@company.com"
+                                                   value="{{email}}"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--brand-yellow-light); border-color: var(--border-color);">
+                                                <i class="bi bi-lock" style="color: var(--brand-navy);"></i>
+                                            </span>
+                                            <input type="password" 
+                                                   class="form-control" 
+                                                   id="password" 
+                                                   name="password" 
+                                                   placeholder="Create a strong password"
+                                                   required
+                                                   minlength="8">
+                                            <button class="btn btn-outline-secondary" 
+                                                    type="button" 
+                                                    id="togglePassword"
+                                                    style="border-color: var(--border-color);">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
+                                        <div class="form-text">
+                                            <small class="text-muted">
+                                                Password must be at least 8 characters long
+                                            </small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--brand-yellow-light); border-color: var(--border-color);">
+                                                <i class="bi bi-lock" style="color: var(--brand-navy);"></i>
+                                            </span>
+                                            <input type="password" 
+                                                   class="form-control" 
+                                                   id="confirmPassword" 
+                                                   name="confirmPassword" 
+                                                   placeholder="Confirm your password"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Plan Selection -->
+                                    <div class="mb-4">
+                                        <label class="form-label">Choose Your Plan</label>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="card h-100" style="cursor: pointer;" data-plan="free">
+                                                    <div class="card-body text-center p-3">
+                                                        <input type="radio" 
+                                                               class="form-check-input" 
+                                                               name="plan" 
+                                                               value="free" 
+                                                               id="planFree" 
+                                                               checked>
+                                                        <label for="planFree" class="form-check-label w-100" style="cursor: pointer;">
+                                                            <h6 class="mt-2">Free</h6>
+                                                            <small class="text-muted">
+                                                                1 card, basic features
+                                                            </small>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="card h-100" style="cursor: pointer; border-color: var(--brand-yellow);" data-plan="basic">
+                                                    <div class="card-body text-center p-3 position-relative">
+                                                        <span class="badge position-absolute top-0 start-50 translate-middle" style="background: var(--brand-red);">
+                                                            Popular
+                                                        </span>
+                                                        <input type="radio" 
+                                                               class="form-check-input" 
+                                                               name="plan" 
+                                                               value="basic" 
+                                                               id="planBasic">
+                                                        <label for="planBasic" class="form-check-label w-100" style="cursor: pointer;">
+                                                            <h6 class="mt-2">Basic - $9/mo</h6>
+                                                            <small class="text-muted">
+                                                                5 cards, analytics
+                                                            </small>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input type="checkbox" 
+                                                   class="form-check-input" 
+                                                   id="agreeTerms" 
+                                                   name="agreeTerms" 
+                                                   required>
+                                            <label class="form-check-label" for="agreeTerms">
+                                                I agree to the 
+                                                <a href="/terms" target="_blank" style="color: var(--brand-navy);">Terms of Service</a> 
+                                                and 
+                                                <a href="/privacy" target="_blank" style="color: var(--brand-navy);">Privacy Policy</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input type="checkbox" 
+                                                   class="form-check-input" 
+                                                   id="emailUpdates" 
+                                                   name="emailUpdates">
+                                            <label class="form-check-label" for="emailUpdates">
+                                                Send me product updates and tips
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary w-100 py-2 mb-3">
+                                        <i class="bi bi-person-plus me-2"></i>Create Account
+                                    </button>
+                                </form>
+                                
+                                <hr class="my-4">
+                                
+                                <div class="text-center">
+                                    <p class="mb-0">Already have an account? 
+                                        <a href="/auth/login" class="text-decoration-none fw-semibold" style="color: var(--brand-navy);">
+                                            Sign in here
+                                        </a>
+                                    </p>
+                                </div>
+                                
+                                <!-- Trial Notice -->
+                                <div class="mt-4 p-3 rounded text-center" style="background: var(--brand-yellow-light);">
+                                    <small class="text-muted">
+                                        <i class="bi bi-gift me-1"></i>
+                                        Start with a 14-day free trial. No credit card required.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toggle password visibility
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const password = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            password.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    });
+    
+    // Password confirmation validation
+    document.getElementById('confirmPassword').addEventListener('input', function() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = this.value;
+        
+        if (password !== confirmPassword) {
+            this.setCustomValidity('Passwords do not match');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+    
+    // Form submission with loading state
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise bi-spin me-2"></i>Creating Account...';
+        submitBtn.disabled = true;
+        
+        // Re-enable button after 5 seconds if form doesn't redirect
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 5000);
+    });
+    
+    // Plan selection visual feedback
+    document.querySelectorAll('[data-plan]').forEach(card => {
+        card.addEventListener('click', function() {
+            const plan = this.getAttribute('data-plan');
+            const radio = document.getElementById(`plan${plan.charAt(0).toUpperCase() + plan.slice(1)}`);
+            radio.checked = true;
+            
+            // Update visual selection
+            document.querySelectorAll('[data-plan]').forEach(c => {
+                c.style.borderColor = 'var(--border-color)';
+                c.style.backgroundColor = '';
+            });
+            
+            this.style.borderColor = 'var(--brand-yellow)';
+            this.style.backgroundColor = 'var(--brand-yellow-light)';
+        });
+    });
+    
+    // Auto-focus first field
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('firstName').focus();
+        
+        // Set initial selection for free plan
+        document.querySelector('[data-plan="free"]').style.borderColor = 'var(--brand-yellow)';
+        document.querySelector('[data-plan="free"]').style.backgroundColor = 'var(--brand-yellow-light)';
+    });
+</script>

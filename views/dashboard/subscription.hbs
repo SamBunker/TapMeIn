@@ -1,0 +1,210 @@
+{{!-- Subscription Management Page --}}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-none d-md-block bg-primary sidebar">
+            <div class="position-sticky pt-3">
+                <div class="d-flex align-items-center mb-4 text-white">
+                    <i class="fas fa-credit-card fa-2x me-2"></i>
+                    <h5 class="mb-0">TAP ME IN!</h5>
+                </div>
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard/cards">
+                            <i class="fas fa-credit-card me-2"></i>My Cards
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard/profiles">
+                            <i class="fas fa-user-circle me-2"></i>Profiles
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard/analytics">
+                            <i class="fas fa-chart-line me-2"></i>Analytics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white active bg-warning" href="/dashboard/subscription">
+                            <i class="fas fa-crown me-2"></i>Subscription
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/dashboard/support">
+                            <i class="fas fa-life-ring me-2"></i>Support
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2 text-primary">
+                    <i class="fas fa-crown me-2"></i>Subscription Management
+                </h1>
+            </div>
+            
+            <!-- Current Plan -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Current Plan</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h3 class="text-capitalize">{{user.subscription.plan}} Plan</h3>
+                                    <p class="text-muted mb-2">Status: <span class="badge {{#if (eq user.subscription.status 'active')}}bg-success{{else if (eq user.subscription.status 'trial')}}bg-warning{{else}}bg-danger{{/if}}">{{user.subscription.status}}</span></p>
+                                    {{#if (eq user.subscription.status 'trial')}}
+                                        <p class="text-muted">Trial ends: {{formatDate user.subscription.trialEndDate}}</p>
+                                    {{/if}}
+                                </div>
+                                <div class="col-md-4 text-md-end">
+                                    {{#if (eq user.subscription.plan 'free')}}
+                                        <button class="btn btn-warning btn-lg" disabled>
+                                            <i class="fas fa-arrow-up me-2"></i>Upgrade Plan
+                                        </button>
+                                    {{else}}
+                                        <button class="btn btn-outline-primary" disabled>
+                                            <i class="fas fa-cog me-2"></i>Manage Plan
+                                        </button>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Available Plans -->
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="text-primary mb-3">Available Plans</h4>
+                </div>
+                
+                <!-- Free Plan -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card {{#if (eq user.subscription.plan 'free')}}border-success{{else}}border-light{{/if}} h-100">
+                        <div class="card-header text-center {{#if (eq user.subscription.plan 'free')}}bg-success text-white{{else}}bg-light{{/if}}">
+                            <h5 class="mb-0">Free</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <h2 class="text-primary">$0<small class="text-muted">/month</small></h2>
+                            <ul class="list-unstyled mt-3">
+                                <li><i class="fas fa-check text-success me-2"></i>1 NFC Card</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Basic Analytics</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Single Profile</li>
+                                <li><i class="fas fa-times text-muted me-2"></i>Custom Branding</li>
+                                <li><i class="fas fa-times text-muted me-2"></i>Advanced Features</li>
+                            </ul>
+                            {{#if (eq user.subscription.plan 'free')}}
+                                <button class="btn btn-success" disabled>Current Plan</button>
+                            {{else}}
+                                <button class="btn btn-outline-primary" disabled>Downgrade</button>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Basic Plan -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card {{#if (eq user.subscription.plan 'basic')}}border-primary{{else}}border-light{{/if}} h-100">
+                        <div class="card-header text-center {{#if (eq user.subscription.plan 'basic')}}bg-primary text-white{{else}}bg-light{{/if}}">
+                            <h5 class="mb-0">Basic</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <h2 class="text-primary">$9<small class="text-muted">/month</small></h2>
+                            <ul class="list-unstyled mt-3">
+                                <li><i class="fas fa-check text-success me-2"></i>5 NFC Cards</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Advanced Analytics</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Multiple Profiles</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Email Support</li>
+                                <li><i class="fas fa-times text-muted me-2"></i>Custom Branding</li>
+                            </ul>
+                            {{#if (eq user.subscription.plan 'basic')}}
+                                <button class="btn btn-primary" disabled>Current Plan</button>
+                            {{else}}
+                                <button class="btn btn-primary" disabled>Choose Basic</button>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Standard Plan -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card {{#if (eq user.subscription.plan 'standard')}}border-warning{{else}}border-light{{/if}} h-100">
+                        <div class="card-header text-center {{#if (eq user.subscription.plan 'standard')}}bg-warning text-dark{{else}}bg-light{{/if}}">
+                            <h5 class="mb-0">Standard</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <h2 class="text-primary">$19<small class="text-muted">/month</small></h2>
+                            <ul class="list-unstyled mt-3">
+                                <li><i class="fas fa-check text-success me-2"></i>25 NFC Cards</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Premium Analytics</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Unlimited Profiles</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Priority Support</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Custom Branding</li>
+                            </ul>
+                            {{#if (eq user.subscription.plan 'standard')}}
+                                <button class="btn btn-warning" disabled>Current Plan</button>
+                            {{else}}
+                                <button class="btn btn-warning" disabled>Choose Standard</button>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Premium Plan -->
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card {{#if (eq user.subscription.plan 'premium')}}border-danger{{else}}border-light{{/if}} h-100">
+                        <div class="card-header text-center {{#if (eq user.subscription.plan 'premium')}}bg-danger text-white{{else}}bg-light{{/if}}">
+                            <h5 class="mb-0">Premium</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <h2 class="text-primary">$39<small class="text-muted">/month</small></h2>
+                            <ul class="list-unstyled mt-3">
+                                <li><i class="fas fa-check text-success me-2"></i>Unlimited Cards</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Enterprise Analytics</li>
+                                <li><i class="fas fa-check text-success me-2"></i>White Label Options</li>
+                                <li><i class="fas fa-check text-success me-2"></i>24/7 Phone Support</li>
+                                <li><i class="fas fa-check text-success me-2"></i>API Access</li>
+                            </ul>
+                            {{#if (eq user.subscription.plan 'premium')}}
+                                <button class="btn btn-danger" disabled>Current Plan</button>
+                            {{else}}
+                                <button class="btn btn-danger" disabled>Choose Premium</button>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Coming Soon Notice -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Payment Processing Coming Soon!</strong> 
+                        Plan upgrades and billing management will be available in the next update. 
+                        Contact support for immediate assistance with plan changes.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="/dashboard" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </main>
+    </div>
+</div>

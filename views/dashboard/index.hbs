@@ -1,0 +1,350 @@
+{{!-- TAP ME IN! Dashboard with Global Layout --}}
+
+<!-- Sidebar -->
+<div class="row">
+    <nav class="col-md-3 col-lg-2 d-md-block" style="background: var(--bg-secondary); border-right: 2px solid var(--border-color); min-height: calc(100vh - 152px); position: sticky; top: 76px;">
+        <div class="position-sticky pt-3">
+            <div class="mb-4 px-3">
+                <small class="text-uppercase" style="color: var(--text-secondary); font-weight: 700; letter-spacing: 1px;">Main</small>
+            </div>
+            
+            <a href="/dashboard" class="d-block p-3 mb-2 text-decoration-none rounded" style="background: var(--brand-navy); color: white; font-weight: 600;">
+                <i class="bi bi-speedometer2 me-2"></i>Dashboard
+            </a>
+            
+            <a href="/dashboard/cards" class="d-block p-3 mb-2 text-decoration-none rounded" style="color: var(--text-primary); transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                <i class="bi bi-credit-card me-2"></i>My Cards
+            </a>
+            
+            <a href="/dashboard/profiles" class="d-block p-3 mb-2 text-decoration-none rounded" style="color: var(--text-primary); transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                <i class="bi bi-person-circle me-2"></i>Profiles
+            </a>
+            
+            <a href="/dashboard/analytics" class="d-block p-3 mb-2 text-decoration-none rounded" style="color: var(--text-primary); transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                <i class="bi bi-graph-up me-2"></i>Analytics
+            </a>
+            
+            <a href="/dashboard/subscription" class="d-block p-3 mb-2 text-decoration-none rounded" style="color: var(--text-primary); transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                <i class="bi bi-gem me-2"></i>Subscription
+            </a>
+            
+            <div class="mb-4 mt-4 px-3">
+                <small class="text-uppercase" style="color: var(--text-secondary); font-weight: 700; letter-spacing: 1px;">Support</small>
+            </div>
+            
+            <a href="/dashboard/support" class="d-block p-3 mb-2 text-decoration-none rounded" style="color: var(--text-primary); transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                <i class="bi bi-life-preserver me-2"></i>Help & Support
+            </a>
+            
+            <a href="/dashboard/settings" class="d-block p-3 mb-2 text-decoration-none rounded" style="color: var(--text-primary); transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                <i class="bi bi-gear me-2"></i>Settings
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="fade-in">
+            {{#if welcome}}
+                <div class="mb-4 pt-3">
+                    <h1 class="display-4 fw-bold mb-2" style="color: var(--brand-navy);">Welcome to TAP ME IN! 🎉</h1>
+                    <p class="text-muted">Your account has been created successfully. Let's get you started!</p>
+                </div>
+            {{else}}
+                <div class="mb-4 pt-3">
+                    <h1 class="display-4 fw-bold mb-2" style="color: var(--brand-navy);">Good {{#if morning}}morning{{else if afternoon}}afternoon{{else}}evening{{/if}}, {{user.firstName}}! 👋</h1>
+                    <p class="text-muted">Here's your network performance today</p>
+                </div>
+            {{/if}}
+
+            <!-- Stats Grid -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'; this.style.borderColor='var(--brand-yellow)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor=''">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary); letter-spacing: 0.5px;">Active Cards</div>
+                                    <div class="h3 fw-bold mb-2" style="color: var(--brand-navy);">{{stats.activeCards}}</div>
+                                    <div class="small fw-semibold" style="color: var(--brand-navy); background: rgba(255, 201, 20, 0.2); padding: 0.25rem 0.5rem; border-radius: 8px; display: inline-block;">
+                                        <i class="bi bi-plus"></i> {{#if stats.activeCards}}Ready to tap{{else}}Activate your first{{/if}}
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; border-radius: 12px; background: var(--brand-yellow-light); color: var(--brand-navy); border: 2px solid var(--brand-yellow);">
+                                    <i class="bi bi-credit-card fs-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'; this.style.borderColor='var(--brand-yellow)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor=''">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary); letter-spacing: 0.5px;">Total Taps</div>
+                                    <div class="h3 fw-bold mb-2" style="color: var(--brand-navy);">{{stats.totalTaps}}</div>
+                                    <div class="small fw-semibold" style="color: var(--brand-navy); background: rgba(255, 201, 20, 0.2); padding: 0.25rem 0.5rem; border-radius: 8px; display: inline-block;">
+                                        <i class="bi bi-arrow-up"></i> All time connections
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; border-radius: 12px; background: var(--brand-yellow-light); color: var(--brand-navy); border: 2px solid var(--brand-yellow);">
+                                    <i class="bi bi-hand-index fs-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'; this.style.borderColor='var(--brand-yellow)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor=''">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary); letter-spacing: 0.5px;">This Month</div>
+                                    <div class="h3 fw-bold mb-2" style="color: var(--brand-navy);">{{stats.thisMonthTaps}}</div>
+                                    <div class="small fw-semibold" style="color: var(--brand-navy); background: rgba(255, 201, 20, 0.2); padding: 0.25rem 0.5rem; border-radius: 8px; display: inline-block;">
+                                        <i class="bi bi-calendar"></i> Recent activity
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; border-radius: 12px; background: var(--brand-yellow-light); color: var(--brand-navy); border: 2px solid var(--brand-yellow);">
+                                    <i class="bi bi-graph-up-arrow fs-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'; this.style.borderColor='var(--brand-yellow)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor=''">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary); letter-spacing: 0.5px;">Profiles</div>
+                                    <div class="h3 fw-bold mb-2" style="color: var(--brand-navy);">{{stats.totalProfiles}}</div>
+                                    <div class="small fw-semibold" style="color: var(--brand-navy); background: rgba(255, 201, 20, 0.2); padding: 0.25rem 0.5rem; border-radius: 8px; display: inline-block;">
+                                        <i class="bi bi-person"></i> Dynamic content
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; border-radius: 12px; background: var(--brand-yellow-light); color: var(--brand-navy); border: 2px solid var(--brand-yellow);">
+                                    <i class="bi bi-person-circle fs-4"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Section -->
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="fw-bold" style="color: var(--brand-navy);">Quick Actions</h3>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card" style="cursor: pointer; transition: var(--transition);" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='var(--shadow-lg)'; this.style.borderColor='var(--brand-yellow)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor=''" onclick="document.getElementById('activateCardModal').classList.add('show'); document.getElementById('activateCardModal').style.display='block';" data-bs-toggle="modal" data-bs-target="#activateCardModal">
+                            <div class="card-body text-center p-4">
+                                <div class="d-inline-block p-3 mb-3 rounded" style="background: var(--brand-yellow); color: var(--brand-navy);">
+                                    <i class="bi bi-plus-circle fs-1"></i>
+                                </div>
+                                <h5 class="fw-bold mb-2" style="color: var(--brand-navy);">Activate Card</h5>
+                                <p class="text-muted small mb-0">Add a new NFC card to your account</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card" style="cursor: pointer; transition: var(--transition);" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='var(--shadow-lg)'; this.style.borderColor='var(--brand-yellow)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor=''" onclick="window.location.href='/dashboard/profiles'">
+                            <div class="card-body text-center p-4">
+                                <div class="d-inline-block p-3 mb-3 rounded" style="background: var(--brand-yellow); color: var(--brand-navy);">
+                                    <i class="bi bi-person-gear fs-1"></i>
+                                </div>
+                                <h5 class="fw-bold mb-2" style="color: var(--brand-navy);">Edit Profile</h5>
+                                <p class="text-muted small mb-0">Update your digital business card</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card" style="cursor: pointer; transition: var(--transition);" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='var(--shadow-lg)'; this.style.borderColor='var(--brand-yellow)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor=''" onclick="window.location.href='/dashboard/analytics'">
+                            <div class="card-body text-center p-4">
+                                <div class="d-inline-block p-3 mb-3 rounded" style="background: var(--brand-yellow); color: var(--brand-navy);">
+                                    <i class="bi bi-bar-chart fs-1"></i>
+                                </div>
+                                <h5 class="fw-bold mb-2" style="color: var(--brand-navy);">View Analytics</h5>
+                                <p class="text-muted small mb-0">See your tap performance</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card" style="cursor: pointer; transition: var(--transition);" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='var(--shadow-lg)'; this.style.borderColor='var(--brand-yellow)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'; this.style.borderColor=''" onclick="window.location.href='/dashboard/support'">
+                            <div class="card-body text-center p-4">
+                                <div class="d-inline-block p-3 mb-3 rounded" style="background: var(--brand-yellow); color: var(--brand-navy);">
+                                    <i class="bi bi-question-circle fs-1"></i>
+                                </div>
+                                <h5 class="fw-bold mb-2" style="color: var(--brand-navy);">Get Support</h5>
+                                <p class="text-muted small mb-0">Need help? We're here for you</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Feed & Subscription -->
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold mb-0" style="color: var(--brand-navy);">Recent Activity</h5>
+                                {{#if recentActivity.length}}
+                                    <span class="badge" style="background: var(--brand-red);">Live</span>
+                                {{/if}}
+                            </div>
+                            
+                            {{#if recentActivity.length}}
+                                {{#each recentActivity}}
+                                    <div class="d-flex align-items-start gap-3 p-3 mb-2 rounded" style="border-bottom: 1px solid var(--border-color); transition: var(--transition);" onmouseover="this.style.paddingLeft='1rem'; this.style.background='linear-gradient(90deg, rgba(255, 201, 20, 0.05), transparent)'" onmouseout="this.style.paddingLeft=''; this.style.background=''">
+                                        <div class="d-flex align-items-center justify-content-center rounded" style="width: 40px; height: 40px; background: rgba(255, 201, 20, 0.2); color: var(--brand-navy); border: 2px solid var(--brand-yellow);">
+                                            <i class="bi bi-{{icon}}"></i>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-semibold">{{title}}</div>
+                                            <div class="small text-muted">{{description}}</div>
+                                        </div>
+                                        <div class="small text-muted">{{formatDateTime timestamp}}</div>
+                                    </div>
+                                {{/each}}
+                            {{else}}
+                                <div class="text-center py-5">
+                                    <div class="d-flex align-items-center justify-content-center rounded mb-3 mx-auto" style="width: 60px; height: 60px; background: rgba(52, 89, 149, 0.1); color: var(--brand-navy); border: 2px solid var(--brand-navy);">
+                                        <i class="bi bi-lightning fs-3"></i>
+                                    </div>
+                                    <h6 style="color: var(--brand-navy);">Ready for Action!</h6>
+                                    <p class="text-muted small">Your activity will appear here once you start using your cards.</p>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#activateCardModal">
+                                        Activate Your First Card
+                                    </button>
+                                </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3" style="color: var(--brand-navy);">Your Plan</h5>
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px; border-radius: 12px; background: var(--brand-yellow-light); color: var(--brand-navy); border: 2px solid var(--brand-yellow);">
+                                    <i class="bi bi-gem"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 text-capitalize">{{user.subscription.plan}} Plan</h6>
+                                    <small class="text-muted text-capitalize">{{user.subscription.status}}</small>
+                                </div>
+                            </div>
+                            
+                            {{#if (eq user.subscription.plan 'free')}}
+                                <p class="small text-muted mb-3">
+                                    You're on the free plan. Upgrade to unlock more features and get unlimited cards.
+                                </p>
+                                <a href="/dashboard/subscription" class="btn btn-secondary w-100">
+                                    <i class="bi bi-arrow-up me-1"></i>Upgrade Now
+                                </a>
+                            {{else}}
+                                {{#if (eq user.subscription.status 'trial')}}
+                                    <p class="small text-muted mb-3">
+                                        Your trial expires on {{formatDate user.subscription.trialEndDate}}.
+                                    </p>
+                                    <a href="/dashboard/subscription" class="btn btn-primary w-100">
+                                        <i class="bi bi-credit-card me-1"></i>Add Payment
+                                    </a>
+                                {{else}}
+                                    <p class="small text-success mb-3">
+                                        <i class="bi bi-check-circle me-1"></i>Your subscription is active.
+                                    </p>
+                                    <a href="/dashboard/subscription" class="btn btn-outline-secondary w-100">
+                                        Manage Subscription
+                                    </a>
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Activate Card Modal -->
+<div class="modal fade" id="activateCardModal" tabindex="-1" aria-labelledby="activateCardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="activateCardModalLabel">
+                    <i class="bi bi-credit-card me-2"></i>Activate NFC Card
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="activateCardForm" action="/dashboard/activate-card" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="activationCode" class="form-label">Activation Code</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="activationCode" 
+                               name="activationCode" 
+                               placeholder="Enter the code from your card package"
+                               pattern="[A-Z0-9]{6,12}"
+                               required>
+                        <div class="form-text">
+                            Find this code on your card package or receipt.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cardNickname" class="form-label">Card Nickname (Optional)</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="cardNickname" 
+                               name="nickname" 
+                               placeholder="e.g., Business Card, Personal Card"
+                               maxlength="50">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check me-1"></i>Activate Card
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-uppercase activation code
+    document.getElementById('activationCode').addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+    });
+    
+    // Form submission handling
+    document.getElementById('activateCardForm').addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise bi-spin me-1"></i>Activating...';
+        submitBtn.disabled = true;
+        
+        // Re-enable after timeout if not redirected
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 5000);
+    });
+</script>

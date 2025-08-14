@@ -1,0 +1,208 @@
+{{!-- Login Page with TAP ME IN! Branding --}}
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Left Side - Branding -->
+        <div class="col-md-6 d-none d-md-flex flex-column justify-content-center align-items-center" style="background: var(--brand-navy);">
+            <div class="text-center text-white">
+                <img src="/images/tmi-logo-single.png" alt="TAP ME IN! Logo" class="mb-4" style="max-width: 120px;">
+                <h1 class="display-4 fw-bold mb-3">TAP ME IN!</h1>
+                <p class="lead mb-4">Transform your networking with smart NFC cards</p>
+                <div class="row text-center mt-5">
+                    <div class="col-4">
+                        <i class="bi bi-phone fa-2x mb-2"></i>
+                        <p class="small">Instant<br>Connections</p>
+                    </div>
+                    <div class="col-4">
+                        <i class="bi bi-graph-up fa-2x mb-2"></i>
+                        <p class="small">Real-time<br>Analytics</p>
+                    </div>
+                    <div class="col-4">
+                        <i class="bi bi-pencil-square fa-2x mb-2"></i>
+                        <p class="small">Dynamic<br>Updates</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Side - Login Form -->
+        <div class="col-md-6 d-flex flex-column justify-content-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        
+                        <!-- Mobile Brand Header -->
+                        <div class="text-center d-md-none mb-4">
+                            <img src="/images/tmi-logo-single.png" alt="TAP ME IN! Logo" class="mb-3" style="max-width: 80px;">
+                            <div class="logo mb-3">
+                                <span class="tap">TAP</span>
+                                <span class="me">ME</span>
+                                <span class="in">IN</span><span class="exclamation">!</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card shadow-lg border-0">
+                            <div class="card-body p-5">
+                                <h3 class="card-title text-center mb-4" style="color: var(--brand-navy);">Welcome Back</h3>
+                                <p class="text-muted text-center mb-4">Sign in to your account</p>
+                                
+                                {{#if error}}
+                                    <div class="alert alert-danger" role="alert">
+                                        <i class="bi bi-exclamation-triangle me-2"></i>{{error}}
+                                    </div>
+                                {{/if}}
+                                
+                                <form action="/auth/login" method="POST" id="loginForm">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--brand-yellow-light); border-color: var(--border-color);">
+                                                <i class="bi bi-envelope" style="color: var(--brand-navy);"></i>
+                                            </span>
+                                            <input type="email" 
+                                                   class="form-control" 
+                                                   id="email" 
+                                                   name="email" 
+                                                   placeholder="Enter your email"
+                                                   value="{{email}}"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="background: var(--brand-yellow-light); border-color: var(--border-color);">
+                                                <i class="bi bi-lock" style="color: var(--brand-navy);"></i>
+                                            </span>
+                                            <input type="password" 
+                                                   class="form-control" 
+                                                   id="password" 
+                                                   name="password" 
+                                                   placeholder="Enter your password"
+                                                   required>
+                                            <button class="btn btn-outline-secondary" 
+                                                    type="button" 
+                                                    id="togglePassword"
+                                                    style="border-color: var(--border-color);">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            <div class="form-check">
+                                                <input type="checkbox" 
+                                                       class="form-check-input" 
+                                                       id="rememberMe" 
+                                                       name="rememberMe">
+                                                <label class="form-check-label" for="rememberMe">
+                                                    Remember me
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <a href="/auth/forgot-password" class="text-decoration-none" style="color: var(--brand-navy);">
+                                                Forgot password?
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary w-100 py-2 mb-3">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                                    </button>
+                                </form>
+                                
+                                <hr class="my-4">
+                                
+                                <div class="text-center">
+                                    <p class="mb-0">Don't have an account? 
+                                        <a href="/auth/register" class="text-decoration-none fw-semibold" style="color: var(--brand-navy);">
+                                            Create one now
+                                        </a>
+                                    </p>
+                                </div>
+                                
+                                <!-- Demo Credentials (for development) -->
+                                {{#if isDevelopment}}
+                                    <div class="mt-4 p-3 rounded" style="background: var(--brand-yellow-light);">
+                                        <small class="text-muted d-block mb-2">
+                                            <i class="bi bi-info-circle me-1"></i>Demo Credentials:
+                                        </small>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <small class="d-block">
+                                                    <strong>Admin:</strong><br>
+                                                    admin@tapmeinnfc.com<br>
+                                                    admin123
+                                                </small>
+                                            </div>
+                                            <div class="col-6">
+                                                <button type="button" 
+                                                        class="btn btn-sm btn-outline-primary"
+                                                        onclick="fillAdminCredentials()">
+                                                    Use Admin
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toggle password visibility
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const password = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            password.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    });
+    
+    // Fill admin credentials (development only)
+    function fillAdminCredentials() {
+        document.getElementById('email').value = 'admin@tapmeinnfc.com';
+        document.getElementById('password').value = 'admin123';
+    }
+    
+    // Form submission with loading state
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise bi-spin me-2"></i>Signing In...';
+        submitBtn.disabled = true;
+        
+        // Re-enable button after 3 seconds if form doesn't redirect
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 3000);
+    });
+    
+    // Auto-focus first empty field
+    document.addEventListener('DOMContentLoaded', function() {
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        
+        if (!email.value) {
+            email.focus();
+        } else if (!password.value) {
+            password.focus();
+        }
+    });
+</script>

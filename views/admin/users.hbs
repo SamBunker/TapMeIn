@@ -1,0 +1,406 @@
+{{!-- Admin Users Management with TAP ME IN! Branding --}}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Admin Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block" style="background: var(--brand-navy-darker); min-height: calc(100vh - 152px); position: sticky; top: 76px;">
+            <div class="position-sticky pt-3">
+                <div class="d-flex align-items-center mb-4 px-3">
+                    <i class="bi bi-shield-check fs-2 me-2" style="color: var(--brand-yellow);"></i>
+                    <div>
+                        <h5 class="text-white mb-0">ADMIN</h5>
+                        <small style="color: var(--brand-yellow);">TAP ME IN!</small>
+                    </div>
+                </div>
+                
+                <div class="mb-4 px-3">
+                    <small class="text-uppercase" style="color: var(--brand-yellow); font-weight: 700; letter-spacing: 1px;">Main</small>
+                </div>
+                
+                <a href="/admin" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                    <i class="bi bi-speedometer2 me-2"></i>Overview
+                </a>
+                
+                <a href="/admin/users" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="background: var(--brand-yellow); color: var(--brand-navy); font-weight: 600;">
+                    <i class="bi bi-people me-2"></i>Users
+                </a>
+                
+                <a href="/admin/cards" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                    <i class="bi bi-credit-card me-2"></i>Cards
+                </a>
+                
+                <a href="/admin/analytics" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                    <i class="bi bi-graph-up me-2"></i>Analytics
+                </a>
+                
+                <div class="mb-4 mt-4 px-3">
+                    <small class="text-uppercase" style="color: var(--brand-yellow); font-weight: 700; letter-spacing: 1px;">System</small>
+                </div>
+                
+                <a href="/admin/support" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                    <i class="bi bi-life-preserver me-2"></i>Support
+                </a>
+                
+                <a href="/admin/settings" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                    <i class="bi bi-gear me-2"></i>Settings
+                </a>
+                
+                <div class="mb-4 mt-4 px-3">
+                    <small class="text-uppercase" style="color: var(--brand-yellow); font-weight: 700; letter-spacing: 1px;">Quick</small>
+                </div>
+                
+                <a href="/dashboard" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                    <i class="bi bi-person-circle me-2"></i>User View
+                </a>
+                
+                <a href="/auth/logout" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: var(--brand-red); transition: var(--transition);" onmouseover="this.style.background='rgba(255, 89, 100, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
+                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </a>
+            </div>
+        </nav>
+        
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="fade-in">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4">
+                    <h1 class="display-4 fw-bold" style="color: var(--brand-navy);">
+                        <i class="bi bi-people me-2" style="color: var(--brand-yellow);"></i>
+                        Users Management
+                    </h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-outline-secondary" onclick="exportUsers()">
+                                <i class="bi bi-download me-1"></i>Export
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="createUser()">
+                            <i class="bi bi-person-plus me-1"></i>Add User
+                        </button>
+                    </div>
+                </div>
+
+                <!-- User Stats -->
+                <div class="row g-4 mb-4">
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary);">Total Users</div>
+                                        <div class="h4 fw-bold" style="color: var(--brand-navy);">{{pagination.totalUsers}}</div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 8px; background: var(--brand-navy); color: white;">
+                                        <i class="bi bi-people"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary);">Active Users</div>
+                                        <div class="h4 fw-bold" style="color: var(--brand-navy);">{{activeUserCount}}</div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 8px; background: #28a745; color: white;">
+                                        <i class="bi bi-person-check"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary);">Premium Users</div>
+                                        <div class="h4 fw-bold" style="color: var(--brand-navy);">{{premiumUserCount}}</div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 8px; background: var(--brand-yellow); color: var(--brand-navy);">
+                                        <i class="bi bi-gem"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary);">New This Month</div>
+                                        <div class="h4 fw-bold" style="color: var(--brand-navy);">{{newUserCount}}</div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 8px; background: #17a2b8; color: white;">
+                                        <i class="bi bi-person-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="GET" action="/admin/users" class="row g-3">
+                            <div class="col-md-4">
+                                <label for="search" class="form-label">Search Users</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" style="background: var(--brand-yellow-light); border-color: var(--border-color);">
+                                        <i class="bi bi-search" style="color: var(--brand-navy);"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="search" name="search" value="{{filters.search}}" placeholder="Name or email">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="role" class="form-label">Role</label>
+                                <select class="form-select" id="role" name="role">
+                                    <option value="">All Roles</option>
+                                    {{#each filters.roleOptions}}
+                                        <option value="{{this}}" {{#if (eq this ../filters.role)}}selected{{/if}}>{{this}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="plan" class="form-label">Plan</label>
+                                <select class="form-select" id="plan" name="plan">
+                                    <option value="">All Plans</option>
+                                    {{#each filters.planOptions}}
+                                        <option value="{{this}}" {{#if (eq this ../filters.plan)}}selected{{/if}}>{{this}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="sortBy" class="form-label">Sort By</label>
+                                <select class="form-select" id="sortBy" name="sortBy">
+                                    <option value="createdAt" {{#if (eq filters.sortBy 'createdAt')}}selected{{/if}}>Joined Date</option>
+                                    <option value="firstName" {{#if (eq filters.sortBy 'firstName')}}selected{{/if}}>First Name</option>
+                                    <option value="lastName" {{#if (eq filters.sortBy 'lastName')}}selected{{/if}}>Last Name</option>
+                                    <option value="email" {{#if (eq filters.sortBy 'email')}}selected{{/if}}>Email</option>
+                                    <option value="lastLoginAt" {{#if (eq filters.sortBy 'lastLoginAt')}}selected{{/if}}>Last Login</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bi bi-funnel me-1"></i>Filter
+                                </button>
+                                <a href="/admin/users" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Users Table -->
+                <div class="card">
+                    <div class="card-header" style="background: var(--brand-navy); color: white;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-people me-2"></i>
+                                Users ({{pagination.totalUsers}} total)
+                            </h5>
+                            <div class="d-flex align-items-center gap-2">
+                                <select class="form-select form-select-sm" style="width: auto;" onchange="changeLimit(this.value)">
+                                    <option value="20" {{#if (eq pagination.limit 20)}}selected{{/if}}>20 per page</option>
+                                    <option value="50" {{#if (eq pagination.limit 50)}}selected{{/if}}>50 per page</option>
+                                    <option value="100" {{#if (eq pagination.limit 100)}}selected{{/if}}>100 per page</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        {{#if users.length}}
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead style="background: var(--bg-secondary);">
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Subscription</th>
+                                            <th>Cards</th>
+                                            <th>Activity</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each users}}
+                                            <tr style="transition: var(--transition);" onmouseover="this.style.background='var(--brand-yellow-light)'" onmouseout="this.style.background=''">
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; border-radius: 50%; background: var(--brand-navy); color: white; font-weight: 600;">
+                                                            {{substring firstName 0 1}}{{substring lastName 0 1}}
+                                                        </div>
+                                                        <div>
+                                                            <div class="fw-semibold" style="color: var(--brand-navy);">{{firstName}} {{lastName}}</div>
+                                                            <small class="text-muted">{{email}}</small>
+                                                            {{#if (eq role 'admin')}}
+                                                                <div><span class="badge bg-danger">Admin</span></div>
+                                                            {{/if}}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span class="badge {{#if (eq subscription.plan 'premium')}}bg-warning{{else if (eq subscription.plan 'basic')}}bg-success{{else}}bg-secondary{{/if}}">
+                                                            {{subscription.plan}}
+                                                        </span>
+                                                    </div>
+                                                    <small class="text-muted">{{subscription.status}}</small>
+                                                    {{#if subscription.trialEndDate}}
+                                                        <div><small class="text-warning">Trial ends: {{formatDate subscription.trialEndDate}}</small></div>
+                                                    {{/if}}
+                                                </td>
+                                                <td>
+                                                    <div class="fw-semibold" style="color: var(--brand-navy);">{{cardCount}} total</div>
+                                                    <small class="text-success">{{activeCardCount}} active</small>
+                                                </td>
+                                                <td>
+                                                    <div>{{formatDate createdAt}}</div>
+                                                    {{#if lastLoginAt}}
+                                                        <small class="text-muted">Last login: {{formatDate lastLoginAt}}</small>
+                                                    {{else}}
+                                                        <small class="text-warning">Never logged in</small>
+                                                    {{/if}}
+                                                </td>
+                                                <td>
+                                                    {{#if isActive}}
+                                                        <span class="badge bg-success">Active</span>
+                                                    {{else}}
+                                                        <span class="badge bg-danger">Inactive</span>
+                                                    {{/if}}
+                                                    {{#if isLocked}}
+                                                        <div><span class="badge bg-warning">Locked</span></div>
+                                                    {{/if}}
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <button class="btn btn-outline-primary" onclick="viewUser('{{_id}}')" title="View Details">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                        <button class="btn btn-outline-secondary" onclick="editUser('{{_id}}')" title="Edit User">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                        {{#unless (eq role 'admin')}}
+                                                            <form method="POST" action="/admin/users/{{_id}}/toggle-status" style="display: inline;">
+                                                                <button type="submit" class="btn btn-outline-{{#if isActive}}warning{{else}}success{{/if}}" title="{{#if isActive}}Deactivate{{else}}Activate{{/if}} User">
+                                                                    <i class="bi bi-{{#if isActive}}pause{{else}}play{{/if}}"></i>
+                                                                </button>
+                                                            </form>
+                                                        {{/unless}}
+                                                        <button class="btn btn-outline-info" onclick="loginAsUser('{{_id}}')" title="Login as User">
+                                                            <i class="bi bi-person-gear"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {{else}}
+                            <div class="text-center py-5">
+                                <div class="d-flex align-items-center justify-content-center rounded mb-3 mx-auto" style="width: 80px; height: 80px; background: rgba(52, 89, 149, 0.1); color: var(--brand-navy);">
+                                    <i class="bi bi-people fs-1"></i>
+                                </div>
+                                <h5 style="color: var(--brand-navy);">No Users Found</h5>
+                                <p class="text-muted">No users match your current filters.</p>
+                                <a href="/admin/users" class="btn btn-outline-secondary">Clear Filters</a>
+                            </div>
+                        {{/if}}
+                    </div>
+
+                    <!-- Pagination -->
+                    {{#if pagination.totalPages}}
+                        <div class="card-footer" style="background: var(--bg-secondary);">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    Showing {{#if users.length}}{{math (math pagination.currentPage minus 1) times 20 plus 1}} - {{math pagination.currentPage times 20}}{{else}}0{{/if}} of {{pagination.totalUsers}} users
+                                </small>
+                                
+                                {{#if (gt pagination.totalPages 1)}}
+                                    <nav aria-label="Users pagination">
+                                        <ul class="pagination pagination-sm mb-0">
+                                            {{#if pagination.hasPrev}}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{pagination.prevPage}}&{{buildQueryString filters}}">
+                                                        <i class="bi bi-chevron-left"></i>
+                                                    </a>
+                                                </li>
+                                            {{/if}}
+                                            
+                                            {{#times pagination.totalPages}}
+                                                {{#if (eq this ../pagination.currentPage)}}
+                                                    <li class="page-item active">
+                                                        <span class="page-link">{{this}}</span>
+                                                    </li>
+                                                {{else if (or (eq this 1) (eq this ../pagination.totalPages) (and (gte this (math ../pagination.currentPage minus 2)) (lte this (math ../pagination.currentPage plus 2))))}}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page={{this}}&{{buildQueryString ../filters}}">{{this}}</a>
+                                                    </li>
+                                                {{else if (eq this 2)}}
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">...</span>
+                                                    </li>
+                                                {{/if}}
+                                            {{/times}}
+                                            
+                                            {{#if pagination.hasNext}}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{pagination.nextPage}}&{{buildQueryString filters}}">
+                                                        <i class="bi bi-chevron-right"></i>
+                                                    </a>
+                                                </li>
+                                            {{/if}}
+                                        </ul>
+                                    </nav>
+                                {{/if}}
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+// User management functions
+function viewUser(userId) {
+    // For now, just show an alert. In production, this would open a detailed view
+    alert('View user details for: ' + userId);
+}
+
+function editUser(userId) {
+    // For now, just show an alert. In production, this would open an edit modal
+    alert('Edit user: ' + userId);
+}
+
+function createUser() {
+    // For now, just show an alert. In production, this would open a create user modal
+    alert('Create new user functionality would go here');
+}
+
+function loginAsUser(userId) {
+    if (confirm('Are you sure you want to login as this user? This will log you out of the admin panel.')) {
+        // Implementation would go here
+        alert('Login as user functionality would be implemented here');
+    }
+}
+
+function exportUsers() {
+    const params = new URLSearchParams(window.location.search);
+    params.set('export', 'csv');
+    window.location.href = '/admin/users?' + params.toString();
+}
+
+function changeLimit(limit) {
+    const params = new URLSearchParams(window.location.search);
+    params.set('limit', limit);
+    params.set('page', '1'); // Reset to first page
+    window.location.href = '/admin/users?' + params.toString();
+}
+</script>

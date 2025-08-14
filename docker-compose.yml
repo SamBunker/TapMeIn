@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: tapmeinnfc-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: tapmeinnfc_dev
+    volumes:
+      - mongodb_data:/data/db
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - tapmeinnfc-network
+
+  # Redis (for future caching)
+  redis:
+    image: redis:7.2-alpine
+    container_name: tapmeinnfc-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - tapmeinnfc-network
+
+  # Node.js Application
+  app:
+    image: node:18-slim
+    container_name: tapmeinnfc-app
+    restart: unless-stopped
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/tapmeinnfc_dev?authSource=admin
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: dev-jwt-secret-change-in-production
+      JWT_REFRESH_SECRET: dev-refresh-secret-change-in-production
+      BASE_URL: http://localhost:3000
+      PORT: 3000
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: bash -c "npm install && npm run dev"
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - tapmeinnfc-network
+
+volumes:
+  mongodb_data:
+  redis_data:
+
+networks:
+  tapmeinnfc-network:
+    driver: bridge
