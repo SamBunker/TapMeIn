@@ -55,5 +55,4 @@ This project uses Claude Code subagents for development. See `docs/subagent-prac
 
 ### Requirements
 - Docker Desktop
-- Windows with D: drive sharing enabled
 - Node.js 18 (provided by container)
