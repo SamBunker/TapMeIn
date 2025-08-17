@@ -14,6 +14,9 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
+    <!-- Dashboard Styles -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    
     <!-- TAP ME IN! Brand Styles -->
     <style>
         :root {
@@ -440,9 +443,11 @@
     <nav class="navbar navbar-custom">
         <div class="container-fluid px-4">
             <div class="d-flex align-items-center">
-                <button class="btn btn-link d-md-none me-3" onclick="toggleMobileNav()" style="display: none;">
+                {{#if user}}
+                <button class="btn btn-link d-md-none me-3" onclick="toggleSidebar()">
                     <i class="bi bi-list fs-4" style="color: var(--brand-navy);"></i>
                 </button>
+                {{/if}}
                 <a href="/" class="d-flex align-items-center text-decoration-none">
                     <img src="/images/tmi-logo-single.png" alt="TAP ME IN! Logo" style="height: 40px; width: auto; margin-right: 8px;">
                     <span class="logo">
@@ -495,6 +500,123 @@
     </nav>
     {{/unless}}
     
+    <!-- Sidebar Overlay for Mobile -->
+    {{#if user}}
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    {{/if}}
+    
+    <!-- Global Sidebar -->
+    {{#if user}}
+    <aside class="sidebar" id="sidebar">
+        {{#if (startsWith currentPath '/admin')}}
+        {{!-- Admin Navigation --}}
+        <div class="mb-4">
+            <small class="text-muted text-uppercase">Admin</small>
+        </div>
+        
+        <a href="/admin" class="sidebar-item {{#if (eq currentPath '/admin')}}active{{/if}}">
+            <i class="bi bi-speedometer2"></i>
+            <span>Overview</span>
+        </a>
+        
+        <a href="/admin/users" class="sidebar-item {{#if (eq currentPath '/admin/users')}}active{{/if}}">
+            <i class="bi bi-people"></i>
+            <span>Users</span>
+        </a>
+        
+        <a href="/admin/cards" class="sidebar-item {{#if (eq currentPath '/admin/cards')}}active{{/if}}">
+            <i class="bi bi-credit-card"></i>
+            <span>Cards</span>
+        </a>
+        
+        <a href="/admin/analytics" class="sidebar-item {{#if (eq currentPath '/admin/analytics')}}active{{/if}}">
+            <i class="bi bi-graph-up"></i>
+            <span>Analytics</span>
+        </a>
+        
+        <div class="mb-4 mt-4">
+            <small class="text-muted text-uppercase">System</small>
+        </div>
+        
+        <a href="/admin/support" class="sidebar-item {{#if (eq currentPath '/admin/support')}}active{{/if}}">
+            <i class="bi bi-life-preserver"></i>
+            <span>Support</span>
+        </a>
+        
+        <a href="/admin/settings" class="sidebar-item {{#if (eq currentPath '/admin/settings')}}active{{/if}}">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+        
+        <div class="mb-4 mt-4">
+            <small class="text-muted text-uppercase">Quick</small>
+        </div>
+        
+        <a href="/dashboard" class="sidebar-item">
+            <i class="bi bi-person-circle"></i>
+            <span>User View</span>
+        </a>
+        
+        <a href="/auth/logout" class="sidebar-item text-danger">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+        {{else}}
+        {{!-- User Navigation --}}
+        <div class="mb-4">
+            <small class="text-muted text-uppercase">Main</small>
+        </div>
+        
+        {{#if (eq user.role 'admin')}}
+        <a href="/admin" class="sidebar-item {{#if (eq currentPath '/admin')}}active{{/if}}">
+            <i class="bi bi-shield-check"></i>
+            <span>Admin Dashboard</span>
+        </a>
+        {{/if}}
+        
+        <a href="/dashboard" class="sidebar-item {{#if (eq currentPath '/dashboard')}}active{{/if}}">
+            <i class="bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+        </a>
+        
+        <a href="/dashboard/cards" class="sidebar-item {{#if (eq currentPath '/dashboard/cards')}}active{{/if}}">
+            <i class="bi bi-credit-card"></i>
+            <span>My Cards</span>
+        </a>
+        
+        <a href="/dashboard/analytics" class="sidebar-item {{#if (eq currentPath '/dashboard/analytics')}}active{{/if}}">
+            <i class="bi bi-graph-up"></i>
+            <span>Analytics</span>
+        </a>
+        
+        <a href="/dashboard/profiles" class="sidebar-item {{#if (eq currentPath '/dashboard/profiles')}}active{{/if}}">
+            <i class="bi bi-person-circle"></i>
+            <span>Profiles</span>
+        </a>
+        
+        <a href="/dashboard/subscription" class="sidebar-item {{#if (eq currentPath '/dashboard/subscription')}}active{{/if}}">
+            <i class="bi bi-gem"></i>
+            <span>Subscription</span>
+        </a>
+        
+        <div class="mb-4 mt-4">
+            <small class="text-muted text-uppercase">Support</small>
+        </div>
+        
+        <a href="/dashboard/settings" class="sidebar-item {{#if (eq currentPath '/dashboard/settings')}}active{{/if}}">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+        
+        <a href="/dashboard/support" class="sidebar-item {{#if (eq currentPath '/dashboard/support')}}active{{/if}}">
+            <i class="bi bi-question-circle"></i>
+            <span>Help</span>
+        </a>
+        {{/if}}
+        
+    </aside>
+    {{/if}}
+    
     <!-- Flash Messages -->
     {{#if messages}}
         <div class="container mt-3">
@@ -508,7 +630,7 @@
     {{/if}}
     
     <!-- Main Content -->
-    <main class="{{#unless hideNavbar}}main-container{{/unless}}">
+    <main class="{{#unless hideNavbar}}main-container{{/unless}} {{#if user}}with-sidebar{{/if}}">
         {{{body}}}
     </main>
     
@@ -569,7 +691,43 @@
             
             // Initialize theme
             initializeTheme();
+            
+            // Set active sidebar item based on current path
+            setActiveSidebarItem();
         });
+        
+        // Toggle Sidebar (Mobile)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar) {
+                sidebar.classList.toggle('show');
+                if (overlay) {
+                    overlay.classList.toggle('show');
+                }
+            }
+        }
+        
+        // Set active sidebar item
+        function setActiveSidebarItem() {
+            const currentPath = window.location.pathname;
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            
+            sidebarItems.forEach(item => {
+                item.classList.remove('active');
+                const href = item.getAttribute('href');
+                if (href && currentPath === href) {
+                    item.classList.add('active');
+                } else if (href && currentPath.startsWith(href) && href !== '/dashboard' && href !== '/admin') {
+                    // For sub-pages like /dashboard/cards
+                    item.classList.add('active');
+                } else if (href === '/dashboard' && currentPath === '/dashboard') {
+                    item.classList.add('active');
+                } else if (href === '/admin' && (currentPath === '/admin' || currentPath.startsWith('/admin/'))) {
+                    item.classList.add('active');
+                }
+            });
+        }
         
         // Theme management
         const themes = ['minimal', 'dark', 'gradient'];

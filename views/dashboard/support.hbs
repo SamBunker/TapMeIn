@@ -1,84 +1,42 @@
 {{!-- Support Page - Placeholder --}}
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-none d-md-block bg-primary sidebar">
-            <div class="position-sticky pt-3">
-                <div class="d-flex align-items-center mb-4 text-white">
-                    <i class="fas fa-credit-card fa-2x me-2"></i>
-                    <h5 class="mb-0">TAP ME IN!</h5>
-                </div>
-                
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/dashboard">
-                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/dashboard/cards">
-                            <i class="fas fa-credit-card me-2"></i>My Cards
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/dashboard/profiles">
-                            <i class="fas fa-user-circle me-2"></i>Profiles
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/dashboard/analytics">
-                            <i class="fas fa-chart-line me-2"></i>Analytics
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/dashboard/subscription">
-                            <i class="fas fa-crown me-2"></i>Subscription
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white active bg-warning" href="/dashboard/support">
-                            <i class="fas fa-life-ring me-2"></i>Support
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
         
         <!-- Main content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <main class="col-12 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2 text-primary">
-                    <i class="fas fa-life-ring me-2"></i>Help & Support
+                <h1 class="h2" style="color: #000000;">
+                    <i class="bi bi-life-preserver me-2"></i>Help & Support
                 </h1>
             </div>
             
             <div class="row">
                 <!-- Quick Help -->
                 <div class="col-md-6 mb-4">
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>Quick Help</h5>
+                    <div class="stat-card-simple">
+                        <div class="d-flex align-items-center mb-3" style="background: #f8f9fa; padding: 1rem; border-radius: 12px; border: 1px solid rgba(0, 0, 0, 0.1);">
+                            <h5 class="mb-0" style="color: #000000;"><i class="bi bi-question-circle me-2"></i>Quick Help</h5>
                         </div>
-                        <div class="card-body">
+                        <div>
                             <div class="list-group list-group-flush">
                                 <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-credit-card me-2 text-primary"></i>
+                                    <i class="bi bi-credit-card me-2" style="color: #000000;"></i>
                                     How to activate my NFC card
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-user-edit me-2 text-primary"></i>
+                                    <i class="bi bi-person-gear me-2" style="color: #000000;"></i>
                                     Setting up my profile
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-chart-line me-2 text-primary"></i>
+                                    <i class="bi bi-graph-up me-2" style="color: #000000;"></i>
                                     Understanding analytics
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-crown me-2 text-primary"></i>
+                                    <i class="bi bi-gem me-2" style="color: #000000;"></i>
                                     Managing subscriptions
                                 </a>
                                 <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-mobile-alt me-2 text-primary"></i>
+                                    <i class="bi bi-phone me-2" style="color: #000000;"></i>
                                     Troubleshooting NFC issues
                                 </a>
                             </div>
@@ -88,29 +46,29 @@
                 
                 <!-- Contact Support -->
                 <div class="col-md-6 mb-4">
-                    <div class="card">
-                        <div class="card-header bg-warning text-dark">
-                            <h5 class="mb-0"><i class="fas fa-headset me-2"></i>Contact Support</h5>
+                    <div class="stat-card-simple">
+                        <div class="d-flex align-items-center mb-3" style="background: #f8f9fa; padding: 1rem; border-radius: 12px; border: 1px solid rgba(0, 0, 0, 0.1);">
+                            <h5 class="mb-0" style="color: #000000;"><i class="bi bi-headset me-2"></i>Contact Support</h5>
                         </div>
-                        <div class="card-body text-center">
-                            <i class="fas fa-envelope fa-4x text-primary mb-3"></i>
-                            <h5 class="text-primary">Need Personal Help?</h5>
+                        <div class="text-center">
+                            <i class="bi bi-envelope fs-1 mb-3" style="color: #000000;"></i>
+                            <h5 style="color: #000000;">Need Personal Help?</h5>
                             <p class="text-muted">Our support team is here to help you get the most out of your TAP ME IN! experience.</p>
                             
                             <div class="row mt-4">
                                 <div class="col-6">
-                                    <div class="card bg-light">
-                                        <div class="card-body text-center">
-                                            <i class="fas fa-envelope fa-2x text-primary mb-2"></i>
+                                    <div class="stat-card-simple" style="background: #f8f9fa;">
+                                        <div class="text-center">
+                                            <i class="bi bi-envelope fs-3 mb-2" style="color: #000000;"></i>
                                             <h6>Email Support</h6>
                                             <small class="text-muted">Response within 24 hours</small>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="card bg-light">
-                                        <div class="card-body text-center">
-                                            <i class="fas fa-comments fa-2x text-primary mb-2"></i>
+                                    <div class="stat-card-simple" style="background: #f8f9fa;">
+                                        <div class="text-center">
+                                            <i class="bi bi-chat-dots fs-3 mb-2" style="color: #000000;"></i>
                                             <h6>Live Chat</h6>
                                             <small class="text-muted">Available 9am-5pm EST</small>
                                         </div>
@@ -118,8 +76,8 @@
                                 </div>
                             </div>
                             
-                            <button class="btn btn-primary btn-lg mt-3" disabled>
-                                <i class="fas fa-plus me-2"></i>Create Support Ticket
+                            <button class="btn btn-outline-secondary btn-lg mt-3" disabled>
+                                <i class="bi bi-plus me-2"></i>Create Support Ticket
                             </button>
                             <p class="small text-muted mt-2">Support ticketing system coming soon!</p>
                         </div>
@@ -128,52 +86,52 @@
                 
                 <!-- System Status -->
                 <div class="col-12">
-                    <div class="card">
-                        <div class="card-header bg-success text-white">
-                            <h5 class="mb-0"><i class="fas fa-server me-2"></i>System Status</h5>
+                    <div class="stat-card-simple">
+                        <div class="d-flex align-items-center mb-3" style="background: #f8f9fa; padding: 1rem; border-radius: 12px; border: 1px solid rgba(0, 0, 0, 0.1);">
+                            <h5 class="mb-0" style="color: #000000;"><i class="bi bi-hdd me-2"></i>System Status</h5>
                         </div>
-                        <div class="card-body">
+                        <div>
                             <div class="row">
                                 <div class="col-md-3 mb-3">
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-success rounded-circle me-3" style="width: 12px; height: 12px;"></div>
+                                        <div class="rounded-circle me-3" style="width: 12px; height: 12px; background: #000000;"></div>
                                         <div>
                                             <h6 class="mb-0">NFC Service</h6>
-                                            <small class="text-success">Operational</small>
+                                            <small style="color: #666666;">Operational</small>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-success rounded-circle me-3" style="width: 12px; height: 12px;"></div>
+                                        <div class="rounded-circle me-3" style="width: 12px; height: 12px; background: #000000;"></div>
                                         <div>
                                             <h6 class="mb-0">Analytics</h6>
-                                            <small class="text-success">Operational</small>
+                                            <small style="color: #666666;">Operational</small>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-success rounded-circle me-3" style="width: 12px; height: 12px;"></div>
+                                        <div class="rounded-circle me-3" style="width: 12px; height: 12px; background: #000000;"></div>
                                         <div>
                                             <h6 class="mb-0">Profile Updates</h6>
-                                            <small class="text-success">Operational</small>
+                                            <small style="color: #666666;">Operational</small>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-success rounded-circle me-3" style="width: 12px; height: 12px;"></div>
+                                        <div class="rounded-circle me-3" style="width: 12px; height: 12px; background: #000000;"></div>
                                         <div>
                                             <h6 class="mb-0">Payment System</h6>
-                                            <small class="text-success">Operational</small>
+                                            <small style="color: #666666;">Operational</small>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="text-center mt-3">
-                                <a href="/dashboard" class="btn btn-outline-primary">
-                                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                                <a href="/dashboard" class="btn btn-outline-secondary">
+                                    <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
                                 </a>
                             </div>
                         </div>

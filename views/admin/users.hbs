@@ -1,69 +1,12 @@
 {{!-- Admin Users Management with TAP ME IN! Branding --}}
 <div class="container-fluid">
     <div class="row">
-        <!-- Admin Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-md-block" style="background: var(--brand-navy-darker); min-height: calc(100vh - 152px); position: sticky; top: 76px;">
-            <div class="position-sticky pt-3">
-                <div class="d-flex align-items-center mb-4 px-3">
-                    <i class="bi bi-shield-check fs-2 me-2" style="color: var(--brand-yellow);"></i>
-                    <div>
-                        <h5 class="text-white mb-0">ADMIN</h5>
-                        <small style="color: var(--brand-yellow);">TAP ME IN!</small>
-                    </div>
-                </div>
-                
-                <div class="mb-4 px-3">
-                    <small class="text-uppercase" style="color: var(--brand-yellow); font-weight: 700; letter-spacing: 1px;">Main</small>
-                </div>
-                
-                <a href="/admin" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
-                    <i class="bi bi-speedometer2 me-2"></i>Overview
-                </a>
-                
-                <a href="/admin/users" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="background: var(--brand-yellow); color: var(--brand-navy); font-weight: 600;">
-                    <i class="bi bi-people me-2"></i>Users
-                </a>
-                
-                <a href="/admin/cards" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
-                    <i class="bi bi-credit-card me-2"></i>Cards
-                </a>
-                
-                <a href="/admin/analytics" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
-                    <i class="bi bi-graph-up me-2"></i>Analytics
-                </a>
-                
-                <div class="mb-4 mt-4 px-3">
-                    <small class="text-uppercase" style="color: var(--brand-yellow); font-weight: 700; letter-spacing: 1px;">System</small>
-                </div>
-                
-                <a href="/admin/support" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
-                    <i class="bi bi-life-preserver me-2"></i>Support
-                </a>
-                
-                <a href="/admin/settings" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
-                    <i class="bi bi-gear me-2"></i>Settings
-                </a>
-                
-                <div class="mb-4 mt-4 px-3">
-                    <small class="text-uppercase" style="color: var(--brand-yellow); font-weight: 700; letter-spacing: 1px;">Quick</small>
-                </div>
-                
-                <a href="/dashboard" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: white; transition: var(--transition);" onmouseover="this.style.background='rgba(255, 201, 20, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
-                    <i class="bi bi-person-circle me-2"></i>User View
-                </a>
-                
-                <a href="/auth/logout" class="d-block p-3 mb-2 text-decoration-none rounded mx-2" style="color: var(--brand-red); transition: var(--transition);" onmouseover="this.style.background='rgba(255, 89, 100, 0.15)'; this.style.transform='translateX(4px)'" onmouseout="this.style.background=''; this.style.transform=''">
-                    <i class="bi bi-box-arrow-right me-2"></i>Logout
-                </a>
-            </div>
-        </nav>
-        
         <!-- Main content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <main class="col-12 px-md-4">
             <div class="fade-in">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4">
-                    <h1 class="display-4 fw-bold" style="color: var(--brand-navy);">
-                        <i class="bi bi-people me-2" style="color: var(--brand-yellow);"></i>
+                    <h1 class="display-4 fw-bold" style="color: #000000;">
+                        <i class="bi bi-people me-2" style="color: #666666;"></i>
                         Users Management
                     </h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
@@ -81,76 +24,68 @@
                 <!-- User Stats -->
                 <div class="row g-4 mb-4">
                     <div class="col-xl-3 col-md-6">
-                        <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start">
+                        <div class="stat-card-simple">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
                                     <div>
-                                        <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary);">Total Users</div>
-                                        <div class="h4 fw-bold" style="color: var(--brand-navy);">{{pagination.totalUsers}}</div>
+                                        <div class="stat-label">Total Users</div>
+                                        <div class="stat-value">{{pagination.totalUsers}}</div>
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 8px; background: var(--brand-navy); color: white;">
+                                    <div class="activity-icon">
                                         <i class="bi bi-people"></i>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
-                        <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start">
+                        <div class="stat-card-simple">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
                                     <div>
-                                        <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary);">Active Users</div>
-                                        <div class="h4 fw-bold" style="color: var(--brand-navy);">{{activeUserCount}}</div>
+                                        <div class="stat-label">Active Users</div>
+                                        <div class="stat-value">{{activeUserCount}}</div>
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 8px; background: #28a745; color: white;">
+                                    <div class="activity-icon">
                                         <i class="bi bi-person-check"></i>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
-                        <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start">
+                        <div class="stat-card-simple">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
                                     <div>
-                                        <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary);">Premium Users</div>
-                                        <div class="h4 fw-bold" style="color: var(--brand-navy);">{{premiumUserCount}}</div>
+                                        <div class="stat-label">Premium Users</div>
+                                        <div class="stat-value">{{premiumUserCount}}</div>
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 8px; background: var(--brand-yellow); color: var(--brand-navy);">
+                                    <div class="activity-icon">
                                         <i class="bi bi-gem"></i>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
-                        <div class="card" style="transition: var(--transition);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-lg)'" onmouseout="this.style.transform=''; this.style.boxShadow='var(--shadow-sm)'">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start">
+                        <div class="stat-card-simple">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
                                     <div>
-                                        <div class="small text-uppercase fw-bold mb-1" style="color: var(--text-secondary);">New This Month</div>
-                                        <div class="h4 fw-bold" style="color: var(--brand-navy);">{{newUserCount}}</div>
+                                        <div class="stat-label">New This Month</div>
+                                        <div class="stat-value">{{newUserCount}}</div>
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 8px; background: #17a2b8; color: white;">
+                                    <div class="activity-icon">
                                         <i class="bi bi-person-plus"></i>
                                     </div>
                                 </div>
-                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Filters -->
-                <div class="card mb-4">
-                    <div class="card-body">
+                <div class="stat-card mb-4">
+                    <div>
                         <form method="GET" action="/admin/users" class="row g-3">
                             <div class="col-md-4">
                                 <label for="search" class="form-label">Search Users</label>
                                 <div class="input-group">
-                                    <span class="input-group-text" style="background: var(--brand-yellow-light); border-color: var(--border-color);">
-                                        <i class="bi bi-search" style="color: var(--brand-navy);"></i>
+                                    <span class="input-group-text" style="background: #f0f0f0; border-color: rgba(0, 0, 0, 0.1);">
+                                        <i class="bi bi-search" style="color: #000000;"></i>
                                     </span>
                                     <input type="text" class="form-control" id="search" name="search" value="{{filters.search}}" placeholder="Name or email">
                                 </div>
@@ -193,13 +128,11 @@
                             </div>
                         </form>
                     </div>
-                </div>
 
                 <!-- Users Table -->
-                <div class="card">
-                    <div class="card-header" style="background: var(--brand-navy); color: white;">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">
+                <div class="stat-card-simple">
+                    <div class="d-flex justify-content-between align-items-center mb-3" style="background: #f8f9fa; padding: 1rem; border-radius: 12px; border: 1px solid rgba(0, 0, 0, 0.1);">
+                            <h5 class="mb-0" style="color: #000000;">
                                 <i class="bi bi-people me-2"></i>
                                 Users ({{pagination.totalUsers}} total)
                             </h5>
@@ -211,12 +144,11 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body p-0">
+                    <div>
                         {{#if users.length}}
                             <div class="table-responsive">
                                 <table class="table table-hover mb-0">
-                                    <thead style="background: var(--bg-secondary);">
+                                    <thead style="background: #f8f9fa;">
                                         <tr>
                                             <th>User</th>
                                             <th>Subscription</th>
@@ -228,24 +160,24 @@
                                     </thead>
                                     <tbody>
                                         {{#each users}}
-                                            <tr style="transition: var(--transition);" onmouseover="this.style.background='var(--brand-yellow-light)'" onmouseout="this.style.background=''">
+                                            <tr style="transition: all 0.2s ease;">
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; border-radius: 50%; background: var(--brand-navy); color: white; font-weight: 600;">
+                                                        <div class="activity-icon me-3">
                                                             {{substring firstName 0 1}}{{substring lastName 0 1}}
                                                         </div>
                                                         <div>
-                                                            <div class="fw-semibold" style="color: var(--brand-navy);">{{firstName}} {{lastName}}</div>
+                                                            <div class="fw-semibold" style="color: #000000;">{{firstName}} {{lastName}}</div>
                                                             <small class="text-muted">{{email}}</small>
                                                             {{#if (eq role 'admin')}}
-                                                                <div><span class="badge bg-danger">Admin</span></div>
+                                                                <div><span class="badge" style="background: #000000; color: #ffffff;">Admin</span></div>
                                                             {{/if}}
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        <span class="badge {{#if (eq subscription.plan 'premium')}}bg-warning{{else if (eq subscription.plan 'basic')}}bg-success{{else}}bg-secondary{{/if}}">
+                                                        <span class="badge" style="background: #000000; color: #ffffff; border-radius: 8px; padding: 0.25rem 0.5rem;">
                                                             {{subscription.plan}}
                                                         </span>
                                                     </div>
@@ -255,8 +187,8 @@
                                                     {{/if}}
                                                 </td>
                                                 <td>
-                                                    <div class="fw-semibold" style="color: var(--brand-navy);">{{cardCount}} total</div>
-                                                    <small class="text-success">{{activeCardCount}} active</small>
+                                                    <div class="fw-semibold" style="color: #000000;">{{cardCount}} total</div>
+                                                    <small style="color: #666666;">{{activeCardCount}} active</small>
                                                 </td>
                                                 <td>
                                                     <div>{{formatDate createdAt}}</div>
@@ -268,12 +200,12 @@
                                                 </td>
                                                 <td>
                                                     {{#if isActive}}
-                                                        <span class="badge bg-success">Active</span>
+                                                        <span class="badge" style="background: #000000; color: #ffffff;">Active</span>
                                                     {{else}}
-                                                        <span class="badge bg-danger">Inactive</span>
+                                                        <span class="badge" style="background: #666666; color: #ffffff;">Inactive</span>
                                                     {{/if}}
                                                     {{#if isLocked}}
-                                                        <div><span class="badge bg-warning">Locked</span></div>
+                                                        <div><span class="badge" style="background: #8a8a8a; color: #ffffff;">Locked</span></div>
                                                     {{/if}}
                                                 </td>
                                                 <td>
@@ -286,12 +218,12 @@
                                                         </button>
                                                         {{#unless (eq role 'admin')}}
                                                             <form method="POST" action="/admin/users/{{_id}}/toggle-status" style="display: inline;">
-                                                                <button type="submit" class="btn btn-outline-{{#if isActive}}warning{{else}}success{{/if}}" title="{{#if isActive}}Deactivate{{else}}Activate{{/if}} User">
+                                                                <button type="submit" class="btn btn-outline-secondary" title="{{#if isActive}}Deactivate{{else}}Activate{{/if}} User">
                                                                     <i class="bi bi-{{#if isActive}}pause{{else}}play{{/if}}"></i>
                                                                 </button>
                                                             </form>
                                                         {{/unless}}
-                                                        <button class="btn btn-outline-info" onclick="loginAsUser('{{_id}}')" title="Login as User">
+                                                        <button class="btn btn-outline-secondary" onclick="loginAsUser('{{_id}}')" title="Login as User">
                                                             <i class="bi bi-person-gear"></i>
                                                         </button>
                                                     </div>
@@ -303,10 +235,10 @@
                             </div>
                         {{else}}
                             <div class="text-center py-5">
-                                <div class="d-flex align-items-center justify-content-center rounded mb-3 mx-auto" style="width: 80px; height: 80px; background: rgba(52, 89, 149, 0.1); color: var(--brand-navy);">
-                                    <i class="bi bi-people fs-1"></i>
+                                <div class="activity-icon mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                                    <i class="bi bi-people"></i>
                                 </div>
-                                <h5 style="color: var(--brand-navy);">No Users Found</h5>
+                                <h5 style="color: #000000;">No Users Found</h5>
                                 <p class="text-muted">No users match your current filters.</p>
                                 <a href="/admin/users" class="btn btn-outline-secondary">Clear Filters</a>
                             </div>
@@ -315,7 +247,7 @@
 
                     <!-- Pagination -->
                     {{#if pagination.totalPages}}
-                        <div class="card-footer" style="background: var(--bg-secondary);">
+                        <div style="background: #f8f9fa; padding: 1rem; border-radius: 0 0 12px 12px; border-top: 1px solid rgba(0, 0, 0, 0.1);">
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
                                     Showing {{#if users.length}}{{math (math pagination.currentPage minus 1) times 20 plus 1}} - {{math pagination.currentPage times 20}}{{else}}0{{/if}} of {{pagination.totalUsers}} users

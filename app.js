@@ -132,6 +132,10 @@ app.engine('hbs', engine({
       if (!str) return '';
       return str.substring(start, end);
     },
+    startsWith: (str, prefix) => {
+      if (!str || !prefix) return false;
+      return str.startsWith(prefix);
+    },
     math: (lvalue, operator, rvalue) => {
       lvalue = parseFloat(lvalue);
       rvalue = parseFloat(rvalue);
@@ -192,6 +196,12 @@ const connectDB = async () => {
 
 // Connect to database
 connectDB();
+
+// Middleware to set current path for views
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path;
+  next();
+});
 
 // Auth routes (both API and web interface)
 app.use('/auth', authRoutes);

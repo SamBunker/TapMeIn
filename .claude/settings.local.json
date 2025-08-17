@@ -1,8 +1,13 @@
 {
   "permissions": {
-    "defaultMode": "acceptEdits",
     "allow": [
-      "Bash(mkdir:*)"
-    ]
+      "Bash(mkdir:*)",
+      "Bash(rg:*)",
+      "Bash(curl:*)",
+      "Bash(npm run lint)",
+      "Bash(npm test)",
+      "Bash(git add:*)"
+    ],
+    "defaultMode": "acceptEdits"
   }
 }
