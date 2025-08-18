@@ -2,12 +2,27 @@
 
 <!-- Dashboard View -->
 <div id="dashboard-view" class="view-content">
+            {{#if isDemo}}
+                <div class="alert alert-info alert-dismissible fade show" role="alert" style="background: linear-gradient(135deg, #1e40af, #1e3a8a); color: white; border: none; border-radius: 12px; margin-bottom: 2rem;">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-play-circle fs-3 me-3"></i>
+                        <div>
+                            <h5 class="mb-1">🎯 You're viewing a demo!</h5>
+                            <p class="mb-0">This is sample data to show you how TAP ME IN! works. Ready to get started?</p>
+                        </div>
+                        <a href="/auth/welcome" class="btn btn-light ms-auto">
+                            <i class="bi bi-rocket me-1"></i>Start Free Trial
+                        </a>
+                    </div>
+                </div>
+            {{/if}}
+            
             <div class="mb-4 fade-in">
                 {{#if welcome}}
                     <h1 class="display-4 fw-bold mb-2">Welcome to TAP ME IN! 🎉</h1>
                     <p class="text-muted">Your account has been created successfully. Let's get you started!</p>
                 {{else}}
-                    <h1 class="display-4 fw-bold mb-2">Good {{#if morning}}morning{{else if afternoon}}afternoon{{else}}evening{{/if}}, {{user.firstName}}! 👋</h1>
+                    <h1 class="display-4 fw-bold mb-2">Good {{#if morning}}morning{{else if afternoon}}afternoon{{else}}evening{{/if}}, {{#if user.firstName}}{{user.firstName}}{{else}}{{user.email}}{{/if}}! 👋</h1>
                     <p class="text-muted">Here's your network performance today</p>
                 {{/if}}
             </div>
@@ -145,13 +160,17 @@
                             </div>
                         </div>
                         <div class="chart-bars">
-                            <div class="chart-bar" style="height: 60%;"></div>
-                            <div class="chart-bar" style="height: 80%;"></div>
-                            <div class="chart-bar" style="height: 45%;"></div>
-                            <div class="chart-bar" style="height: 90%;"></div>
-                            <div class="chart-bar" style="height: 70%;"></div>
-                            <div class="chart-bar" style="height: 85%;"></div>
-                            <div class="chart-bar" style="height: 65%;"></div>
+                            {{#if chartData.length}}
+                                {{#each chartData}}
+                                <div class="chart-bar" style="height: {{percentage}}%;" title="{{label}}: {{value}} taps"></div>
+                                {{/each}}
+                            {{else}}
+                                {{!-- Show empty state when no data --}}
+                                <div class="text-center py-4">
+                                    <i class="bi bi-bar-chart fs-1 text-muted"></i>
+                                    <p class="text-muted mt-2">No tap data yet. Start using your cards to see analytics!</p>
+                                </div>
+                            {{/if}}
                         </div>
                     </div>
                 </div>
@@ -197,7 +216,7 @@
 
 <!-- Interview Helper Bubble -->
     <div class="interview-helper" id="interviewHelper">
-        <button class="btn-close btn-close-white position-absolute top-0 end-0 m-2" onclick="dismissHelper()"></button>
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Close" onclick="dismissHelper()" style="filter: brightness(0) invert(1); opacity: 0.8;"></button>
         <h6>💼 Got an interview?</h6>
         <p class="small mb-2">I noticed you had 3 professional card taps this week. Any callbacks?</p>
         <div class="btn-group">
@@ -326,14 +345,24 @@
 
     // Interview Helper Functions
     function dismissHelper() {
-        document.getElementById('interviewHelper').style.display = 'none';
+        const helper = document.getElementById('interviewHelper');
+        if (helper) {
+            helper.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            helper.style.opacity = '0';
+            helper.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                helper.style.display = 'none';
+            }, 300);
+        }
     }
 
     function handleInterview(response) {
         if (response === 'yes') {
             alert('Great! Let me help you schedule a follow-up reminder.');
+            dismissHelper();
         } else if (response === 'scheduled') {
             alert('Congratulations! I\'ll help you prepare for your interview.');
+            dismissHelper();
         } else {
             dismissHelper();
         }
@@ -359,15 +388,7 @@
         }, 5000);
     });
 
-    // Simulate real-time updates
-    setInterval(() => {
-        // Update a random stat
-        const stats = document.querySelectorAll('.stat-value');
-        if (stats.length > 0) {
-            const randomStat = stats[Math.floor(Math.random() * stats.length)];
-            const currentValue = parseInt(randomStat.textContent.replace(/,/g, ''));
-            const newValue = currentValue + Math.floor(Math.random() * 5);
-            randomStat.textContent = newValue.toLocaleString();
-        }
-    }, 5000);
+    // Real-time stats updates
+    // Stats are loaded from server-side data and updated when new taps occur
+    // No fake incrementing - all data comes from actual database tracking
 </script>

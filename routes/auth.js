@@ -21,6 +21,40 @@ const expectsJSON = (req) => {
 // VIEW ROUTES (HTML responses)
 // ========================================
 
+// @route   GET /auth/welcome
+// @desc    Show welcome page (Step 1 of progressive auth)
+// @access  Public
+router.get('/welcome', (req, res) => {
+  // Redirect to dashboard if already logged in
+  if (req.user) {
+    return res.redirect('/dashboard');
+  }
+  
+  res.render('auth/welcome', {
+    title: 'Welcome - TAP ME IN!',
+    hideNavbar: true,
+    hideFooter: true,
+    layout: 'main'
+  });
+});
+
+// @route   GET /auth/account-type
+// @desc    Show account type selection (Step 2 of progressive auth)
+// @access  Public
+router.get('/account-type', (req, res) => {
+  // Redirect to dashboard if already logged in
+  if (req.user) {
+    return res.redirect('/dashboard');
+  }
+  
+  res.render('auth/account-type', {
+    title: 'Choose Account Type - TAP ME IN!',
+    hideNavbar: true,
+    hideFooter: true,
+    layout: 'main'
+  });
+});
+
 // @route   GET /auth/login
 // @desc    Show login form
 // @access  Public
@@ -40,7 +74,7 @@ router.get('/login', (req, res) => {
 });
 
 // @route   GET /auth/register
-// @desc    Show registration form
+// @desc    Show registration form (Step 3 of progressive auth)
 // @access  Public
 router.get('/register', (req, res) => {
   // Redirect to dashboard if already logged in
@@ -49,7 +83,24 @@ router.get('/register', (req, res) => {
   }
   
   res.render('auth/register', {
-    title: 'Register',
+    title: 'Create Account - TAP ME IN!',
+    hideNavbar: true,
+    hideFooter: true,
+    layout: 'main'
+  });
+});
+
+// @route   GET /auth/complete
+// @desc    Show completion page (Step 4 of progressive auth)
+// @access  Public
+router.get('/complete', (req, res) => {
+  // Redirect to dashboard if already logged in
+  if (req.user) {
+    return res.redirect('/dashboard');
+  }
+  
+  res.render('auth/complete', {
+    title: 'Welcome - TAP ME IN!',
     hideNavbar: true,
     hideFooter: true,
     layout: 'main'
@@ -154,7 +205,7 @@ router.post('/register', registerValidation, async (req, res, next) => {
       }
     }
 
-    const { email, password, firstName, lastName, companyName, plan = 'free' } = req.body;
+    const { email, password, firstName, lastName, companyName, accountType = 'individual' } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findByEmail(email);
@@ -179,16 +230,17 @@ router.post('/register', registerValidation, async (req, res, next) => {
       }
     }
 
-    // Create new user with selected plan
+    // Create new user with selected account type and free trial
     const user = new User({
       email,
       passwordHash: password, // Will be hashed by pre-save middleware
       firstName,
       lastName,
       companyName,
+      accountType,
       subscription: {
-        plan: plan,
-        status: plan === 'free' ? 'active' : 'trial'
+        plan: 'free',
+        status: 'trial'
       }
     });
 
@@ -233,7 +285,7 @@ router.post('/register', registerValidation, async (req, res, next) => {
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
       });
       
-      res.redirect('/dashboard?welcome=true');
+      res.redirect('/auth/complete?accountType=' + (accountType || 'individual'));
     }
 
   } catch (error) {

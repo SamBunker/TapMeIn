@@ -1,7 +1,9 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const { authenticateToken, requireAdminWeb } = require('../middleware/auth');
 const User = require('../models/User');
 const Card = require('../models/Card');
+const Activity = require('../models/Activity');
 
 const router = express.Router();
 
@@ -12,7 +14,9 @@ router.use(requireAdminWeb);
 // Helper function to get admin statistics
 async function getAdminStats() {
   try {
-    const [userStats, cardStats] = await Promise.all([
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    
+    const [userStats, cardStats, activityStats, recentActivity] = await Promise.all([
       User.aggregate([
         {
           $group: {
@@ -21,7 +25,16 @@ async function getAdminStats() {
             activeUsers: {
               $sum: {
                 $cond: [
-                  { $gte: ['$lastLoginAt', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)] },
+                  { $gte: ['$lastLoginAt', thirtyDaysAgo] },
+                  1,
+                  0
+                ]
+              }
+            },
+            newUsersThisMonth: {
+              $sum: {
+                $cond: [
+                  { $gte: ['$createdAt', thirtyDaysAgo] },
                   1,
                   0
                 ]
@@ -50,28 +63,78 @@ async function getAdminStats() {
                 $cond: [{ $eq: ['$isActivated', true] }, 1, 0]
               }
             },
+            newCardsThisMonth: {
+              $sum: {
+                $cond: [
+                  { $gte: ['$createdAt', thirtyDaysAgo] },
+                  1,
+                  0
+                ]
+              }
+            },
             totalTaps: { $sum: '$tapCount' }
           }
         }
-      ])
+      ]),
+      Activity.aggregate([
+        {
+          $match: {
+            createdAt: { $gte: thirtyDaysAgo }
+          }
+        },
+        {
+          $group: {
+            _id: '$type',
+            count: { $sum: 1 }
+          }
+        }
+      ]),
+      Activity.countDocuments({
+        createdAt: { $gte: thirtyDaysAgo }
+      })
     ]);
 
-    const users = userStats[0] || { totalUsers: 0, activeUsers: 0, trialUsers: 0, paidUsers: 0 };
-    const cards = cardStats[0] || { totalCards: 0, activatedCards: 0, totalTaps: 0 };
+    const users = userStats[0] || { 
+      totalUsers: 0, 
+      activeUsers: 0, 
+      newUsersThisMonth: 0,
+      trialUsers: 0, 
+      paidUsers: 0 
+    };
+    const cards = cardStats[0] || { 
+      totalCards: 0, 
+      activatedCards: 0, 
+      newCardsThisMonth: 0,
+      totalTaps: 0 
+    };
 
     return {
       totalUsers: users.totalUsers,
+      activeUsers: users.activeUsers,
+      newUsersThisMonth: users.newUsersThisMonth,
       activeCards: cards.activatedCards,
-      openTickets: 0, // Placeholder for support tickets
-      monthlyRevenue: Math.floor(users.paidUsers * 15) // Simplified calculation
+      totalCards: cards.totalCards,
+      newCardsThisMonth: cards.newCardsThisMonth,
+      totalTaps: cards.totalTaps,
+      recentActivityCount: recentActivity,
+      activityBreakdown: activityStats,
+      monthlyRevenue: Math.floor(users.paidUsers * 15), // Simplified calculation
+      growthRate: users.totalUsers > 0 ? Math.round((users.newUsersThisMonth / users.totalUsers) * 100) : 0
     };
   } catch (error) {
     console.error('Error getting admin stats:', error);
     return {
       totalUsers: 0,
+      activeUsers: 0,
+      newUsersThisMonth: 0,
       activeCards: 0,
-      openTickets: 0,
-      monthlyRevenue: 0
+      totalCards: 0,
+      newCardsThisMonth: 0,
+      totalTaps: 0,
+      recentActivityCount: 0,
+      activityBreakdown: [],
+      monthlyRevenue: 0,
+      growthRate: 0
     };
   }
 }
@@ -93,23 +156,8 @@ router.get('/', async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(5);
     
-    // Get system activity (placeholder)
-    const systemActivity = [
-      {
-        title: 'New User Registration',
-        description: 'User john@example.com registered',
-        timestamp: new Date(),
-        icon: 'user-plus',
-        color: 'primary'
-      },
-      {
-        title: 'Card Activated',
-        description: 'Card TEST0001 was activated',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30),
-        icon: 'credit-card',
-        color: 'success'
-      }
-    ];
+    // Get real system activity from recent activities
+    const systemActivity = await getSystemActivity();
     
     res.render('admin/index', {
       title: 'Admin Dashboard',
@@ -624,5 +672,74 @@ router.get('/cards', async (req, res) => {
     });
   }
 });
+
+// Helper function to get recent system activity
+async function getSystemActivity() {
+  try {
+    // Get recent system-wide activities (high-importance activities from all users)
+    const recentActivities = await Activity.find({
+      $or: [
+        { type: 'card_activated' },
+        { type: 'milestone_reached' },
+        { type: 'interview_completed' },
+        { importanceScore: { $gte: 80 } }
+      ],
+      createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Last 24 hours
+    })
+      .populate('owner', 'email firstName lastName')
+      .populate('relatedObjects.card', 'cardUID nickname')
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .lean();
+
+    // Map to admin dashboard format
+    return recentActivities.map(activity => {
+      let title = activity.title;
+      let description = activity.description;
+      let icon = activity.icon.replace('bi-', ''); // Remove Bootstrap icon prefix
+      let color = 'primary';
+
+      // Anonymize user information for admin view
+      if (activity.owner) {
+        const userDisplay = activity.owner.firstName 
+          ? `${activity.owner.firstName} ${activity.owner.lastName || ''}`.trim()
+          : activity.owner.email.split('@')[0];
+        
+        description = description.replace(activity.owner.email, userDisplay);
+        title = title.replace(activity.owner.email, userDisplay);
+      }
+
+      // Set colors based on activity type
+      switch (activity.type) {
+        case 'card_activated':
+          color = 'success';
+          break;
+        case 'milestone_reached':
+          color = 'warning';
+          break;
+        case 'interview_completed':
+          color = 'info';
+          break;
+        case 'card_tap':
+          color = 'primary';
+          break;
+        default:
+          color = 'secondary';
+      }
+
+      return {
+        title,
+        description,
+        timestamp: activity.createdAt,
+        icon,
+        color,
+        priority: activity.priority || 'normal'
+      };
+    });
+  } catch (error) {
+    console.error('Error getting system activity:', error);
+    return [];
+  }
+}
 
 module.exports = router;

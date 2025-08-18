@@ -1,35 +1,79 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const { authenticateOptional, authenticateToken } = require('../middleware/auth');
 const User = require('../models/User');
 const Card = require('../models/Card');
+const Activity = require('../models/Activity');
 
 const router = express.Router();
 
-// Helper function to get user statistics
+// Helper function to get user statistics with real-time data
 async function getUserStats(userId) {
   try {
-    const cards = await Card.find({ owner: userId });
-    const activeCards = cards.filter(card => card.isActivated).length;
-    const totalTaps = cards.reduce((sum, card) => sum + card.tapCount, 0);
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
     
-    // Calculate this month's taps (simplified - would need analytics collection for real data)
-    const thisMonth = new Date();
-    thisMonth.setDate(1);
-    const thisMonthTaps = Math.floor(totalTaps * 0.3); // Approximation
+    const startOfWeek = new Date();
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+    
+    // Get comprehensive card analytics with fallback queries
+    const [cardAnalytics, monthlyTaps, weeklyTaps, recentActivities, unreadCount, profileCount, totalCards, activatedCards, totalTaps] = await Promise.all([
+      Card.getAnalyticsSummary(userId).catch(() => []),
+      Activity.countDocuments({
+        owner: userId,
+        type: 'card_tap',
+        createdAt: { $gte: startOfMonth }
+      }),
+      Activity.countDocuments({
+        owner: userId,
+        type: 'card_tap',
+        createdAt: { $gte: startOfWeek }
+      }),
+      Activity.getRecentActivities(userId, 5, true),
+      Activity.getUnreadCount(userId),
+      Card.countDocuments({ owner: userId, profile: { $ne: null } }),
+      // Fallback queries for basic stats
+      Card.countDocuments({ owner: userId }),
+      Card.countDocuments({ owner: userId, isActivated: true }),
+      Card.aggregate([
+        { $match: { owner: new mongoose.Types.ObjectId(userId) } },
+        { $group: { _id: null, totalTaps: { $sum: '$tapCount' } } }
+      ]).then(result => result[0]?.totalTaps || 0)
+    ]);
+    
+    // Use aggregation result if available, otherwise use fallback queries
+    const cardStats = cardAnalytics[0] || {
+      totalCards: totalCards,
+      totalTaps: totalTaps,
+      activeCards: activatedCards,
+      averageTapsPerCard: totalCards > 0 ? Math.round(totalTaps / totalCards) : 0
+    };
     
     return {
-      activeCards,
-      totalTaps,
-      thisMonthTaps,
-      totalProfiles: cards.length // Simplified
+      totalCards: cardStats.totalCards,
+      activeCards: cardStats.activeCards,
+      totalTaps: cardStats.totalTaps,
+      thisMonthTaps: monthlyTaps,
+      thisWeekTaps: weeklyTaps,
+      totalProfiles: profileCount,
+      averageTapsPerCard: Math.round(cardStats.averageTapsPerCard || 0),
+      recentActivities: recentActivities,
+      unreadActivities: unreadCount
     };
   } catch (error) {
     console.error('Error getting user stats:', error);
     return {
+      totalCards: 0,
       activeCards: 0,
       totalTaps: 0,
       thisMonthTaps: 0,
-      totalProfiles: 0
+      thisWeekTaps: 0,
+      totalProfiles: 0,
+      averageTapsPerCard: 0,
+      recentActivities: [],
+      unreadActivities: 0
     };
   }
 }
@@ -44,15 +88,26 @@ router.get('/', authenticateOptional, async (req, res) => {
       const stats = await getUserStats(req.user._id);
       const welcome = req.query.welcome === 'true';
       
-      // Get recent activity (placeholder - would come from activity log)
-      const recentActivity = [];
+      // Get additional dashboard data
+      const [chartData, topCards] = await Promise.all([
+        getDashboardChartData(req.user._id),
+        getTopPerformingCards(req.user._id, 3)
+      ]);
+      
+      // Determine time of day for greeting
+      const hour = new Date().getHours();
+      const morning = hour >= 5 && hour < 12;
+      const afternoon = hour >= 12 && hour < 17;
       
       res.render('dashboard/index', {
         title: 'Dashboard',
         user: req.user,
         stats,
-        recentActivity,
+        chartData,
+        topCards,
         welcome,
+        morning,
+        afternoon,
         layout: 'main'
       });
     } catch (error) {
@@ -76,11 +131,25 @@ router.get('/dashboard', authenticateToken, async (req, res) => {
   try {
     const stats = await getUserStats(req.user._id);
     
+    // Get additional dashboard data
+    const [chartData, topCards] = await Promise.all([
+      getDashboardChartData(req.user._id),
+      getTopPerformingCards(req.user._id, 3)
+    ]);
+    
+    // Determine time of day for greeting
+    const hour = new Date().getHours();
+    const morning = hour >= 5 && hour < 12;
+    const afternoon = hour >= 12 && hour < 17;
+    
     res.render('dashboard/index', {
       title: 'Dashboard',
       user: req.user,
       stats,
-      recentActivity: [],
+      chartData,
+      topCards,
+      morning,
+      afternoon,
       layout: 'main'
     });
   } catch (error) {
@@ -111,7 +180,8 @@ router.post('/dashboard/activate-card', authenticateToken, async (req, res) => {
         title: 'Dashboard',
         user: req.user,
         stats: await getUserStats(req.user._id),
-        recentActivity: [],
+        chartData: [],
+        topCards: [],
         error: 'Invalid activation code or card already activated',
         layout: 'main'
       });
@@ -134,7 +204,8 @@ router.post('/dashboard/activate-card', authenticateToken, async (req, res) => {
       title: 'Dashboard',
       user: req.user,
       stats: await getUserStats(req.user._id),
-      recentActivity: [],
+      chartData: [],
+      topCards: [],
       error: 'Failed to activate card. Please try again.',
       layout: 'main'
     });
@@ -183,10 +254,22 @@ router.get('/dashboard/analytics', authenticateToken, async (req, res) => {
   try {
     const stats = await getUserStats(req.user._id);
     
+    // Get detailed analytics data
+    const [chartData, cardsList, deviceBreakdown, locationBreakdown] = await Promise.all([
+      getDashboardChartData(req.user._id),
+      getTopPerformingCards(req.user._id, 10),
+      getDeviceBreakdown(req.user._id),
+      getLocationBreakdown(req.user._id)
+    ]);
+    
     res.render('dashboard/analytics', {
       title: 'Analytics',
       user: req.user,
       stats,
+      chartData,
+      cardsList,
+      deviceBreakdown,
+      locationBreakdown,
       layout: 'main'
     });
   } catch (error) {
@@ -242,5 +325,129 @@ router.get('/dashboard/settings', authenticateToken, async (req, res) => {
     res.redirect('/dashboard?error=Unable to load settings');
   }
 });
+
+// Helper function to get dashboard chart data
+async function getDashboardChartData(userId) {
+  try {
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    
+    // Get daily tap counts for the last 30 days
+    const tapData = await Activity.aggregate([
+      {
+        $match: {
+          owner: userId,
+          type: 'card_tap',
+          createdAt: { $gte: thirtyDaysAgo }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: '$createdAt' },
+            month: { $month: '$createdAt' },
+            day: { $dayOfMonth: '$createdAt' }
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { '_id.year': 1, '_id.month': 1, '_id.day': 1 }
+      }
+    ]);
+    
+    // Convert to chart-friendly format
+    return tapData.map(item => ({
+      date: `${item._id.year}-${String(item._id.month).padStart(2, '0')}-${String(item._id.day).padStart(2, '0')}`,
+      taps: item.count
+    }));
+  } catch (error) {
+    console.error('Error getting chart data:', error);
+    return [];
+  }
+}
+
+// Helper function to get top performing cards
+async function getTopPerformingCards(userId, limit = 3) {
+  try {
+    return await Card.find({ owner: userId, isActivated: true })
+      .populate('category', 'name color')
+      .sort({ tapCount: -1 })
+      .limit(limit)
+      .select('cardUID nickname tapCount lastTapped category')
+      .lean();
+  } catch (error) {
+    console.error('Error getting top cards:', error);
+    return [];
+  }
+}
+
+// Helper function to get device breakdown analytics
+async function getDeviceBreakdown(userId) {
+  try {
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    
+    return await Activity.aggregate([
+      {
+        $match: {
+          owner: userId,
+          type: 'card_tap',
+          createdAt: { $gte: thirtyDaysAgo },
+          'metadata.device.type': { $exists: true }
+        }
+      },
+      {
+        $group: {
+          _id: '$metadata.device.type',
+          count: { $sum: 1 },
+          browsers: { $addToSet: '$metadata.device.browser' },
+          os: { $addToSet: '$metadata.device.os' }
+        }
+      },
+      {
+        $sort: { count: -1 }
+      }
+    ]);
+  } catch (error) {
+    console.error('Error getting device breakdown:', error);
+    return [];
+  }
+}
+
+// Helper function to get location breakdown analytics
+async function getLocationBreakdown(userId) {
+  try {
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    
+    return await Activity.aggregate([
+      {
+        $match: {
+          owner: userId,
+          type: 'card_tap',
+          createdAt: { $gte: thirtyDaysAgo },
+          'metadata.location.country': { $exists: true }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            country: '$metadata.location.country',
+            region: '$metadata.location.region',
+            city: '$metadata.location.city'
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { count: -1 }
+      },
+      {
+        $limit: 10
+      }
+    ]);
+  } catch (error) {
+    console.error('Error getting location breakdown:', error);
+    return [];
+  }
+}
 
 module.exports = router;

@@ -380,11 +380,76 @@
 
         /* Footer */
         .footer {
-            background: var(--bg-footer);
-            color: var(--text-on-navy);
+            background: #ffffff;
+            color: #000000;
             padding: 2rem 0;
             margin-top: auto;
+            border-top: 2px solid #000000;
             transition: background 0.3s ease;
+        }
+        
+        .theme-dark .footer {
+            background: #000000;
+            color: #ffffff;
+            border-top: 2px solid #ffffff;
+        }
+        
+        .footer a {
+            color: #666666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .theme-dark .footer a {
+            color: #999999;
+        }
+        
+        .footer a:hover {
+            color: #000000;
+        }
+        
+        .theme-dark .footer a:hover {
+            color: #ffffff;
+        }
+        
+        .footer .logo-footer {
+            height: 48px;
+            width: auto;
+            filter: grayscale(100%) brightness(0);
+        }
+        
+        .theme-dark .footer .logo-footer {
+            filter: grayscale(100%) brightness(100);
+        }
+        
+        .footer-text {
+            color: #666666;
+            font-size: 0.875rem;
+        }
+        
+        .theme-dark .footer-text {
+            color: #999999;
+        }
+        
+        /* Mobile footer adjustments */
+        @media (max-width: 768px) {
+            .footer {
+                padding: 2rem 0 1.5rem;
+                text-align: center;
+            }
+            
+            .footer .logo-footer {
+                height: 36px;
+            }
+            
+            .footer .row > div {
+                text-align: center !important;
+            }
+            
+            .footer .d-flex {
+                justify-content: center !important;
+            }
         }
 
         /* Cards with theme support */
@@ -638,25 +703,40 @@
     {{#unless hideFooter}}
     <footer class="footer">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="/images/tmi-logo-single.png" alt="TAP ME IN! Logo" style="height: 32px; width: auto; margin-right: 8px;">
-                        <span class="logo me-3">
-                            <span class="tap">TAP</span>
-                            <span class="me">ME</span>
-                            <span class="in">IN</span><span class="exclamation">!</span>
-                        </span>
+            <div class="row align-items-center">
+                <div class="col-lg-4 mb-3 mb-lg-0">
+                    <div class="d-flex align-items-center">
+                        <img src="/images/Logo2-Resized.png" alt="TAP ME IN Logo" class="logo-footer">
+                        <div class="ms-3">
+                            <p class="mb-0 footer-text">Dynamic NFC platform</p>
+                            <p class="mb-0 footer-text small">&copy; 2024 TAP ME IN</p>
+                        </div>
                     </div>
-                    <p class="mb-0">Dynamic NFC card management platform</p>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="d-flex justify-content-md-end gap-3 mb-2">
-                        <a href="/dashboard/support" class="text-white text-decoration-none">Support</a>
-                        <a href="/privacy" class="text-white text-decoration-none">Privacy</a>
-                        <a href="/terms" class="text-white text-decoration-none">Terms</a>
+                <div class="col-lg-4">
+                    <div class="d-flex flex-wrap justify-content-center gap-3 gap-md-4 mb-3 mb-lg-0">
+                        <a href="/dashboard">Dashboard</a>
+                        <a href="/dashboard/support">Support</a>
+                        <a href="/privacy">Privacy</a>
+                        <a href="/terms">Terms</a>
+                        <a href="/about">About</a>
                     </div>
-                    <p class="mb-0 small">&copy; 2024 TAP ME IN! All rights reserved.</p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="d-flex justify-content-lg-end justify-content-center gap-3">
+                        <a href="https://twitter.com/tapmeinnfc" target="_blank" rel="noopener" title="Twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="https://linkedin.com/company/tapmeinnfc" target="_blank" rel="noopener" title="LinkedIn">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                        <a href="https://instagram.com/tapmeinnfc" target="_blank" rel="noopener" title="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="mailto:support@tapmein.com" title="Email">
+                            <i class="bi bi-envelope"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

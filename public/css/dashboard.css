@@ -145,7 +145,7 @@ body {
 /* Main Content */
 .main-content {
     margin-left: 260px;
-    padding: 2rem;
+    padding: 2rem 3rem 3rem 3rem;
     min-height: calc(100vh - 76px);
 }
 
@@ -153,6 +153,7 @@ body {
 .main-container.with-sidebar {
     margin-left: 260px;
     min-height: calc(100vh - 76px);
+    padding: 2rem 3rem 3rem 3rem;
 }
 
 /* Sidebar overlay for mobile */
@@ -169,6 +170,11 @@ body {
 
 .sidebar-overlay.show {
     display: block;
+}
+
+/* Container adjustments for better spacing */
+.view-content {
+    padding: 0 1rem 2rem 1rem;
 }
 
 /* Stat Cards */
@@ -233,7 +239,7 @@ body {
 
 .stat-card-simple:hover {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    border: 2px solid #000000;
+    /* border: 2px solid #000000; */
 }
 
 .theme-dark .stat-card-simple:hover {
@@ -342,6 +348,19 @@ body {
 
 .theme-dark .interview-helper .btn:hover {
     background: rgba(0, 0, 0, 0.2);
+}
+
+.interview-helper .btn-close {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.interview-helper .btn-close:hover {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 /* Quick Action Cards (Updated) */
@@ -578,10 +597,12 @@ body {
 
     .main-content {
         margin-left: 0;
+        padding: 1.5rem 1rem 2rem 1rem;
     }
     
     .main-container.with-sidebar {
         margin-left: 0;
+        padding: 1.5rem 1rem 2rem 1rem;
     }
 
     .interview-helper {

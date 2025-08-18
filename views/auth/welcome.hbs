@@ -1,0 +1,289 @@
+{{!-- Progressive Auth - Welcome/Landing Page --}}
+
+<style>
+:root {
+    --primary-blue: #1e40af;
+    --primary-dark: #1e3a8a;
+    --accent-yellow: #fbbf24;
+    --success-green: #10b981;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+}
+
+.welcome-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    z-index: 0;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    padding: 2rem 0;
+}
+
+.welcome-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    color: var(--gray-900);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.option-card {
+    background: white;
+    border: 2px solid var(--gray-100);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.option-card:hover {
+    border-color: var(--primary-blue);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(30, 64, 175, 0.1);
+}
+
+.option-card.featured {
+    background: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+}
+
+.option-card.featured:hover {
+    background: var(--primary-dark);
+    transform: translateY(-6px);
+    box-shadow: 0 25px 50px rgba(30, 64, 175, 0.2);
+}
+
+.option-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+}
+
+.option-card:not(.featured) .option-icon {
+    background: var(--gray-100);
+    color: var(--primary-blue);
+}
+
+.option-card.featured .option-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.feature-badge {
+    position: absolute;
+    top: -8px;
+    right: 20px;
+    background: var(--accent-yellow);
+    color: var(--gray-900);
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.back-to-site {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    z-index: 10;
+}
+
+.back-to-site:hover {
+    color: var(--accent-yellow);
+    text-decoration: none;
+}
+
+@keyframes logoGlow {
+    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@media (max-width: 768px) {
+    .welcome-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+    }
+    
+    .option-card {
+        padding: 2rem 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .back-to-site {
+        position: relative;
+        top: auto;
+        left: auto;
+        display: block;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+}
+</style>
+
+<div class="welcome-page">
+    <a href="/" class="back-to-site">
+        <i class="bi bi-arrow-left me-2"></i>Back to Website
+    </a>
+    
+    <div class="container welcome-content">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-12">
+                <div class="welcome-card">
+                    <!-- Header -->
+                    <div class="text-center mb-5">
+                        <div class="logo-container mb-4" style="position: relative;">
+                            <img src="/images/Logo2-Resized.png" alt="TAP ME IN! Logo" style="height: 80px;" class="mb-3">
+                            <div class="logo-glow" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; background: radial-gradient(circle, rgba(30, 64, 175, 0.2), transparent); border-radius: 50%; z-index: -1; animation: logoGlow 3s ease-in-out infinite;"></div>
+                        </div>
+                        <h1 class="fw-bold mb-3">🎯 Welcome to TAP ME IN!</h1>
+                        <p class="lead text-muted mb-0">
+                            Ready to transform your networking? Choose how you want to get started:
+                        </p>
+                    </div>
+                    
+                    <!-- Options -->
+                    <div class="row g-4 mb-5">
+                        <!-- Sign Up -->
+                        <div class="col-lg-4">
+                            <div class="option-card featured" onclick="window.location.href='/auth/account-type'">
+                                <div class="feature-badge">Most Popular</div>
+                                <div class="option-icon">
+                                    <i class="bi bi-rocket"></i>
+                                </div>
+                                <h4 class="fw-bold mb-3">SIGN UP</h4>
+                                <p class="mb-4">Get started with your free trial</p>
+                                <div class="small mb-3">
+                                    <div class="mb-1">✨ 14-day free trial</div>
+                                    <div class="mb-1">🚀 Full feature access</div>
+                                    <div class="mb-1">🎓 Student discounts</div>
+                                    <div class="mb-1">💳 No credit card required</div>
+                                </div>
+                                <div class="fw-bold">Start Free Trial</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Login -->
+                        <div class="col-lg-4">
+                            <div class="option-card" onclick="window.location.href='/auth/login'">
+                                <div class="option-icon">
+                                    <i class="bi bi-box-arrow-in-right"></i>
+                                </div>
+                                <h4 class="fw-bold mb-3">LOG IN</h4>
+                                <p class="mb-4">Welcome back to your account</p>
+                                <div class="small mb-3 text-muted">
+                                    <div class="mb-1">📊 View your analytics</div>
+                                    <div class="mb-1">🔄 Update your profiles</div>
+                                    <div class="mb-1">📱 Manage your cards</div>
+                                    <div class="mb-1">⚙️ Access settings</div>
+                                </div>
+                                <div class="fw-bold text-primary">Continue Journey</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Demo -->
+                        <div class="col-lg-4">
+                            <div class="option-card" onclick="window.location.href='/demo'">
+                                <div class="option-icon">
+                                    <i class="bi bi-play-circle"></i>
+                                </div>
+                                <h4 class="fw-bold mb-3">DEMO</h4>
+                                <p class="mb-4">Try our service first</p>
+                                <div class="small mb-3 text-muted">
+                                    <div class="mb-1">👀 Preview dashboard</div>
+                                    <div class="mb-1">📈 See sample analytics</div>
+                                    <div class="mb-1">🎯 Test features</div>
+                                    <div class="mb-1">💡 Learn how it works</div>
+                                </div>
+                                <div class="fw-bold text-primary">Explore Demo</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Info -->
+                    <div class="text-center">
+                        <p class="text-muted mb-3">
+                            <strong>Why TAP ME IN?</strong> Founded by college students who understand networking challenges.
+                        </p>
+                        <div class="row g-3 text-sm">
+                            <div class="col-md-3">
+                                <i class="bi bi-credit-card text-primary me-2"></i>
+                                <span>Credit card sized</span>
+                            </div>
+                            <div class="col-md-3">
+                                <i class="bi bi-droplet text-primary me-2"></i>
+                                <span>Waterproof design</span>
+                            </div>
+                            <div class="col-md-3">
+                                <i class="bi bi-wifi text-primary me-2"></i>
+                                <span>NFC technology</span>
+                            </div>
+                            <div class="col-md-3">
+                                <i class="bi bi-phone text-primary me-2"></i>
+                                <span>Works with most phones</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Add click analytics or tracking here if needed
+document.querySelectorAll('.option-card').forEach(card => {
+    card.addEventListener('click', function() {
+        // Add some visual feedback
+        this.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+            this.style.transform = '';
+        }, 150);
+    });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+    if (e.key === '1') {
+        window.location.href = '/auth/account-type';
+    } else if (e.key === '2') {
+        window.location.href = '/auth/login';
+    } else if (e.key === '3') {
+        window.location.href = '/demo';
+    }
+});
+</script>

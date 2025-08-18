@@ -1,0 +1,373 @@
+{{!-- Progressive Auth - Completion/Onboarding (Step 4) --}}
+
+<style>
+:root {
+    --primary-blue: #1e40af;
+    --primary-dark: #1e3a8a;
+    --accent-yellow: #fbbf24;
+    --success-green: #10b981;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+}
+
+.complete-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--success-green) 0%, var(--primary-blue) 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.complete-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    z-index: 0;
+}
+
+.complete-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    padding: 2rem 0;
+}
+
+.complete-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    color: var(--gray-900);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.progress-bar {
+    background: var(--gray-100);
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.progress-fill {
+    background: var(--success-green);
+    height: 100%;
+    width: 100%; /* Step 4 of 4 - Complete! */
+    border-radius: 3px;
+    transition: width 1s ease;
+}
+
+.success-icon {
+    width: 120px;
+    height: 120px;
+    background: var(--success-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    color: white;
+    font-size: 3rem;
+    animation: bounceIn 0.8s ease;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.checklist-item {
+    background: var(--gray-50);
+    border: 2px solid var(--gray-100);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.checklist-item:hover {
+    border-color: var(--primary-blue);
+    background: white;
+}
+
+.checklist-item.completed {
+    background: white;
+    border-color: var(--success-green);
+}
+
+.checklist-item.completed::after {
+    content: '✓';
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--success-green);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.dashboard-btn {
+    background: var(--primary-blue);
+    border: none;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.dashboard-btn:hover {
+    background: var(--primary-dark);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+.feature-highlight {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+    color: white;
+    padding: 2rem;
+    border-radius: 16px;
+    margin: 2rem 0;
+}
+
+.account-info {
+    background: var(--accent-yellow);
+    color: var(--gray-900);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .complete-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+    }
+    
+    .success-icon {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+    }
+}
+</style>
+
+<div class="complete-page">
+    <div class="container complete-content">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-12">
+                <div class="complete-card">
+                    <!-- Progress Bar -->
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    
+                    <!-- Success Icon -->
+                    <div class="success-icon">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <img src="/images/Logo2-Resized.png" alt="TAP ME IN! Logo" style="height: 70px;" class="mb-3">
+                        <h1 class="fw-bold mb-3">🎉 Welcome to TAP ME IN!</h1>
+                        <p class="lead mb-2">Your account has been created successfully!</p>
+                        <small class="text-muted">Step 4 of 4 - Complete!</small>
+                    </div>
+                    
+                    <!-- Account Info -->
+                    <div class="account-info">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="bi bi-person fs-4 me-2" id="accountTypeIcon"></i>
+                            <div>
+                                <div id="accountTypeName">Individual Account</div>
+                                <small>14-day free trial active</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Next Steps Checklist -->
+                    <div class="mb-4">
+                        <h4 class="fw-bold mb-3">Let's get you started! Complete these steps:</h4>
+                        
+                        <div class="checklist-item" onclick="markCompleted(this)" data-step="profile">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-person-gear fs-4 me-3" style="color: var(--primary-blue);"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Set up your profile</h6>
+                                    <p class="text-muted mb-0 small">Add your contact information and professional details</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item" onclick="markCompleted(this)" data-step="card">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-credit-card fs-4 me-3" style="color: var(--primary-blue);"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Activate your first NFC card</h6>
+                                    <p class="text-muted mb-0 small">Enter your activation code to link your physical card</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item" onclick="markCompleted(this)" data-step="test">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-phone fs-4 me-3" style="color: var(--primary-blue);"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Test your card</h6>
+                                    <p class="text-muted mb-0 small">Try tapping your card on a smartphone to see it in action</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item" onclick="markCompleted(this)" data-step="explore">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-bar-chart fs-4 me-3" style="color: var(--primary-blue);"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Explore analytics</h6>
+                                    <p class="text-muted mb-0 small">See how people are interacting with your digital profile</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feature Highlights -->
+                    <div class="feature-highlight text-center">
+                        <h5 class="fw-bold mb-3">🚀 Your 14-Day Trial Includes:</h5>
+                        <div class="row g-3">
+                            <div class="col-md-3 col-6">
+                                <i class="bi bi-infinity fs-3 mb-2"></i>
+                                <div class="small">Unlimited taps</div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <i class="bi bi-graph-up fs-3 mb-2"></i>
+                                <div class="small">Full analytics</div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <i class="bi bi-palette fs-3 mb-2"></i>
+                                <div class="small">Custom themes</div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <i class="bi bi-headset fs-3 mb-2"></i>
+                                <div class="small">Priority support</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="text-center">
+                        <a href="/dashboard" class="dashboard-btn mb-3">
+                            <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+                        </a>
+                        <p class="small text-muted mb-0">
+                            You can always return to these steps later from your dashboard
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Get account type from URL params or session storage
+const urlParams = new URLSearchParams(window.location.search);
+const selectedAccountType = urlParams.get('accountType') || sessionStorage.getItem('selectedAccountType') || 'individual';
+
+// Account type data
+const accountTypeData = {
+    individual: {
+        icon: 'bi-person',
+        name: 'Individual Account'
+    },
+    student: {
+        icon: 'bi-mortarboard',
+        name: 'Student Account'
+    },
+    business: {
+        icon: 'bi-building',
+        name: 'Business Account'
+    }
+};
+
+// Update account type display
+function updateAccountTypeDisplay(type) {
+    const data = accountTypeData[type];
+    document.getElementById('accountTypeIcon').className = `bi ${data.icon} fs-4 me-2`;
+    document.getElementById('accountTypeName').textContent = data.name;
+}
+
+// Mark checklist item as completed
+function markCompleted(element) {
+    element.classList.add('completed');
+    
+    // Save progress to localStorage
+    const step = element.getAttribute('data-step');
+    localStorage.setItem(`onboarding_${step}`, 'completed');
+    
+    // Check if all steps are completed
+    const allItems = document.querySelectorAll('.checklist-item');
+    const completedItems = document.querySelectorAll('.checklist-item.completed');
+    
+    if (completedItems.length === allItems.length) {
+        setTimeout(() => {
+            // Celebrate completion
+            const successIcon = document.querySelector('.success-icon');
+            successIcon.style.animation = 'bounceIn 0.8s ease';
+            
+            // Auto-redirect to dashboard after celebration
+            setTimeout(() => {
+                window.location.href = '/dashboard';
+            }, 2000);
+        }, 500);
+    }
+}
+
+// Load completed steps from localStorage
+document.addEventListener('DOMContentLoaded', function() {
+    updateAccountTypeDisplay(selectedAccountType);
+    
+    // Check for previously completed steps
+    document.querySelectorAll('.checklist-item').forEach(item => {
+        const step = item.getAttribute('data-step');
+        if (localStorage.getItem(`onboarding_${step}`) === 'completed') {
+            item.classList.add('completed');
+        }
+    });
+    
+    // Clear session storage
+    sessionStorage.removeItem('selectedAccountType');
+    
+    // Add some celebration effects
+    setTimeout(() => {
+        document.querySelector('.progress-fill').style.width = '100%';
+    }, 500);
+});
+
+// Auto-advance to dashboard after 30 seconds if user doesn't interact
+let autoAdvanceTimer = setTimeout(() => {
+    window.location.href = '/dashboard';
+}, 30000);
+
+// Clear timer if user interacts with the page
+document.addEventListener('click', () => {
+    clearTimeout(autoAdvanceTimer);
+});
+</script>

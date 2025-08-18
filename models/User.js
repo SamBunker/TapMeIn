@@ -20,6 +20,11 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user'
   },
+  accountType: {
+    type: String,
+    enum: ['individual', 'student', 'business'],
+    default: 'individual'
+  },
   firstName: {
     type: String,
     trim: true,

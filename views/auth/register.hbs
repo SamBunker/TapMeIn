@@ -1,246 +1,315 @@
-{{!-- Registration Page with TAP ME IN! Branding --}}
-<div class="container-fluid vh-100">
-    <div class="row h-100">
-        <!-- Left Side - Branding -->
-        <div class="col-md-6 d-none d-md-flex flex-column justify-content-center align-items-center" style="background: #000000;">
-            <div class="text-center text-white">
-                <img src="/images/tmi-logo-single.png" alt="TAP ME IN! Logo" class="mb-4" style="max-width: 120px;">
-                <h1 class="display-4 fw-bold mb-3">TAP ME IN!</h1>
-                <p class="lead mb-4">Join thousands of professionals already using smart NFC cards</p>
+{{!-- Progressive Auth - Registration Form (Step 3) --}}
+
+<style>
+:root {
+    --primary-blue: #1e40af;
+    --primary-dark: #1e3a8a;
+    --accent-yellow: #fbbf24;
+    --success-green: #10b981;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+}
+
+.register-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.register-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    z-index: 0;
+}
+
+.register-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    padding: 2rem 0;
+}
+
+.register-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    color: var(--gray-900);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.progress-bar {
+    background: var(--gray-100);
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.progress-fill {
+    background: var(--primary-blue);
+    height: 100%;
+    width: 75%; /* Step 3 of 4 */
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.back-btn {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    display: inline-block;
+}
+
+.back-btn:hover {
+    color: var(--accent-yellow);
+    text-decoration: none;
+}
+
+.form-control-custom {
+    border: 2px solid var(--gray-100);
+    border-radius: 12px;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+}
+
+.form-control-custom:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.2rem rgba(30, 64, 175, 0.25);
+}
+
+.account-type-display {
+    background: var(--primary-blue);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.submit-btn {
+    background: var(--primary-blue);
+    border: none;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 12px;
+    font-weight: 600;
+    width: 100%;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.trial-notice {
+    background: var(--gray-50);
+    border: 2px solid var(--primary-blue);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--gray-800);
+}
+
+@media (max-width: 768px) {
+    .register-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+    }
+}
+</style>
+
+<div class="register-page">
+    <div class="container register-content">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-12">
+                <a href="/auth/account-type" class="back-btn">
+                    <i class="bi bi-arrow-left me-2"></i>Back
+                </a>
                 
-                <!-- Features List -->
-                <div class="mt-5">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="bi bi-check-circle fa-lg me-3"></i>
-                        <span>Dynamic profile updates in real-time</span>
+                <div class="register-card">
+                    <!-- Progress Bar -->
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
                     </div>
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="bi bi-check-circle fa-lg me-3"></i>
-                        <span>Detailed analytics and insights</span>
+                    
+                    <!-- Header -->
+                    <div class="text-center mb-4">
+                        <img src="/images/Logo2-Resized.png" alt="TAP ME IN! Logo" style="height: 60px;" class="mb-3">
+                        <h1 class="fw-bold mb-3">Let's create your account</h1>
+                        <p class="text-muted mb-0">Almost there! Just a few details to get started.</p>
+                        <small class="text-muted">Step 3 of 4</small>
                     </div>
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="bi bi-check-circle fa-lg me-3"></i>
-                        <span>Multiple redirect profiles per card</span>
+                    
+                    <!-- Selected Account Type Display -->
+                    <div class="account-type-display" id="accountTypeDisplay">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="bi bi-person fs-4 me-2" id="accountTypeIcon"></i>
+                            <div>
+                                <div class="fw-bold" id="accountTypeName">Individual Account</div>
+                                <small id="accountTypeDesc">Personal networking and career development</small>
+                            </div>
+                        </div>
                     </div>
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="bi bi-check-circle fa-lg me-3"></i>
-                        <span>Professional networking tools</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Right Side - Registration Form -->
-        <div class="col-md-6 d-flex flex-column justify-content-center">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
+                    
+                    {{#if error}}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>{{error}}
+                        </div>
+                    {{/if}}
+                    
+                    <form action="/auth/register" method="POST" id="registerForm">
+                        <!-- Hidden account type field -->
+                        <input type="hidden" id="accountType" name="accountType" value="">
                         
-                        <!-- Mobile Brand Header -->
-                        <div class="text-center d-md-none mb-4">
-                            <img src="/images/tmi-logo-single.png" alt="TAP ME IN! Logo" class="mb-3" style="max-width: 80px;">
-                            <div class="logo mb-3">
-                                <span class="tap">TAP</span>
-                                <span class="me">ME</span>
-                                <span class="in">IN</span><span class="exclamation">!</span>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label fw-semibold">First Name</label>
+                                <input type="text" 
+                                       class="form-control form-control-custom" 
+                                       id="firstName" 
+                                       name="firstName" 
+                                       placeholder="John"
+                                       value="{{firstName}}"
+                                       required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label fw-semibold">Last Name</label>
+                                <input type="text" 
+                                       class="form-control form-control-custom" 
+                                       id="lastName" 
+                                       name="lastName" 
+                                       placeholder="Doe"
+                                       value="{{lastName}}"
+                                       required>
                             </div>
                         </div>
                         
-                        <div class="stat-card-simple shadow-lg">
-                            <div class="card-body p-5">
-                                <h3 class="card-title text-center mb-4" style="color: #000000;">Create Your Account</h3>
-                                <p class="text-center mb-4" style="color: #666666;">Start your 14-day free trial today</p>
-                                
-                                {{#if error}}
-                                    <div class="alert alert-danger" role="alert">
-                                        <i class="bi bi-exclamation-triangle me-2"></i>{{error}}
-                                    </div>
-                                {{/if}}
-                                
-                                <form action="/auth/register" method="POST" id="registerForm">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="firstName" class="form-label">First Name</label>
-                                            <input type="text" 
-                                                   class="form-control" 
-                                                   id="firstName" 
-                                                   name="firstName" 
-                                                   placeholder="John"
-                                                   value="{{firstName}}"
-                                                   style="border: 2px solid #000000;"
-                                                   required>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="lastName" class="form-label">Last Name</label>
-                                            <input type="text" 
-                                                   class="form-control" 
-                                                   id="lastName" 
-                                                   name="lastName" 
-                                                   placeholder="Doe"
-                                                   value="{{lastName}}"
-                                                   style="border: 2px solid #000000;"
-                                                   required>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email Address</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text" style="background: #ffffff; border: 2px solid #000000; border-right: none;">
-                                                <i class="bi bi-envelope" style="color: #000000;"></i>
-                                            </span>
-                                            <input type="email" 
-                                                   class="form-control" 
-                                                   id="email" 
-                                                   name="email" 
-                                                   placeholder="john.doe@company.com"
-                                                   value="{{email}}"
-                                                   style="border: 2px solid #000000; border-left: none;"
-                                                   required>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="password" class="form-label">Password</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text" style="background: #ffffff; border: 2px solid #000000; border-right: none;">
-                                                <i class="bi bi-lock" style="color: #000000;"></i>
-                                            </span>
-                                            <input type="password" 
-                                                   class="form-control" 
-                                                   id="password" 
-                                                   name="password" 
-                                                   placeholder="Create a strong password"
-                                                   style="border: 2px solid #000000; border-left: none; border-right: none;"
-                                                   required
-                                                   minlength="8">
-                                            <button class="btn btn-outline-secondary" 
-                                                    type="button" 
-                                                    id="togglePassword"
-                                                    style="border: 2px solid #000000; border-left: none; color: #000000;">
-                                                <i class="bi bi-eye"></i>
-                                            </button>
-                                        </div>
-                                        <div class="form-text">
-                                            <small style="color: #666666;">
-                                                Password must be at least 8 characters long
-                                            </small>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="confirmPassword" class="form-label">Confirm Password</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text" style="background: #ffffff; border: 2px solid #000000; border-right: none;">
-                                                <i class="bi bi-lock" style="color: #000000;"></i>
-                                            </span>
-                                            <input type="password" 
-                                                   class="form-control" 
-                                                   id="confirmPassword" 
-                                                   name="confirmPassword" 
-                                                   placeholder="Confirm your password"
-                                                   style="border: 2px solid #000000; border-left: none;"
-                                                   required>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Plan Selection -->
-                                    <div class="mb-4">
-                                        <label class="form-label">Choose Your Plan</label>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="stat-card-simple h-100" style="cursor: pointer;" data-plan="free">
-                                                    <div class="card-body text-center p-3">
-                                                        <input type="radio" 
-                                                               class="form-check-input" 
-                                                               name="plan" 
-                                                               value="free" 
-                                                               id="planFree" 
-                                                               checked>
-                                                        <label for="planFree" class="form-check-label w-100" style="cursor: pointer;">
-                                                            <h6 class="mt-2">Free</h6>
-                                                            <small style="color: #666666;">
-                                                                1 card, basic features
-                                                            </small>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="stat-card-simple h-100" style="cursor: pointer; border-color: #000000;" data-plan="basic">
-                                                    <div class="card-body text-center p-3 position-relative">
-                                                        <span class="badge position-absolute top-0 start-50 translate-middle" style="background: #000000; color: #ffffff;">
-                                                            Popular
-                                                        </span>
-                                                        <input type="radio" 
-                                                               class="form-check-input" 
-                                                               name="plan" 
-                                                               value="basic" 
-                                                               id="planBasic">
-                                                        <label for="planBasic" class="form-check-label w-100" style="cursor: pointer;">
-                                                            <h6 class="mt-2">Basic - $9/mo</h6>
-                                                            <small style="color: #666666;">
-                                                                5 cards, analytics
-                                                            </small>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <div class="form-check">
-                                            <input type="checkbox" 
-                                                   class="form-check-input" 
-                                                   id="agreeTerms" 
-                                                   name="agreeTerms" 
-                                                   required>
-                                            <label class="form-check-label" for="agreeTerms">
-                                                I agree to the 
-                                                <a href="/terms" target="_blank" style="color: #000000;">Terms of Service</a> 
-                                                and 
-                                                <a href="/privacy" target="_blank" style="color: #000000;">Privacy Policy</a>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <div class="form-check">
-                                            <input type="checkbox" 
-                                                   class="form-check-input" 
-                                                   id="emailUpdates" 
-                                                   name="emailUpdates">
-                                            <label class="form-check-label" for="emailUpdates">
-                                                Send me product updates and tips
-                                            </label>
-                                        </div>
-                                    </div>
-                                    
-                                    <button type="submit" class="btn w-100 py-2 mb-3" style="background: #000000; color: #ffffff; border: 2px solid #000000; border-radius: 12px; font-weight: 600;">
-                                        <i class="bi bi-person-plus me-2"></i>Create Account
-                                    </button>
-                                </form>
-                                
-                                <hr class="my-4">
-                                
-                                <div class="text-center">
-                                    <p class="mb-0">Already have an account? 
-                                        <a href="/auth/login" class="text-decoration-none fw-semibold" style="color: #000000;">
-                                            Sign in here
-                                        </a>
-                                    </p>
-                                </div>
-                                
-                                <!-- Trial Notice -->
-                                <div class="mt-4 p-3 rounded text-center" style="background: #f8f9fa; border: 2px solid #000000;">
-                                    <small style="color: #666666;">
-                                        <i class="bi bi-gift me-1"></i>
-                                        Start with a 14-day free trial. No credit card required.
-                                    </small>
-                                </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background: white; border: 2px solid var(--gray-100); border-right: none; border-radius: 12px 0 0 12px;">
+                                    <i class="bi bi-envelope" style="color: var(--primary-blue);"></i>
+                                </span>
+                                <input type="email" 
+                                       class="form-control" 
+                                       id="email" 
+                                       name="email" 
+                                       placeholder="john.doe@company.com"
+                                       value="{{email}}"
+                                       style="border: 2px solid var(--gray-100); border-left: none; border-radius: 0 12px 12px 0; padding: 12px 16px;"
+                                       required>
                             </div>
                         </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background: white; border: 2px solid var(--gray-100); border-right: none; border-radius: 12px 0 0 0;">
+                                    <i class="bi bi-lock" style="color: var(--primary-blue);"></i>
+                                </span>
+                                <input type="password" 
+                                       class="form-control" 
+                                       id="password" 
+                                       name="password" 
+                                       placeholder="Create a strong password"
+                                       style="border: 2px solid var(--gray-100); border-left: none; border-right: none; padding: 12px 16px;"
+                                       required
+                                       minlength="8">
+                                <button class="btn btn-outline-secondary" 
+                                        type="button" 
+                                        id="togglePassword"
+                                        style="border: 2px solid var(--gray-100); border-left: none; border-radius: 0 12px 0 0; color: var(--primary-blue);">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">
+                                <small class="text-muted">
+                                    Password must be at least 8 characters long
+                                </small>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="confirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background: white; border: 2px solid var(--gray-100); border-right: none; border-radius: 12px 0 0 12px;">
+                                    <i class="bi bi-lock" style="color: var(--primary-blue);"></i>
+                                </span>
+                                <input type="password" 
+                                       class="form-control" 
+                                       id="confirmPassword" 
+                                       name="confirmPassword" 
+                                       placeholder="Confirm your password"
+                                       style="border: 2px solid var(--gray-100); border-left: none; border-radius: 0 12px 12px 0; padding: 12px 16px;"
+                                       required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" 
+                                       class="form-check-input" 
+                                       id="agreeTerms" 
+                                       name="agreeTerms" 
+                                       required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I agree to the 
+                                    <a href="/terms" target="_blank" style="color: var(--primary-blue);">Terms of Service</a> 
+                                    and 
+                                    <a href="/privacy" target="_blank" style="color: var(--primary-blue);">Privacy Policy</a>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" 
+                                       class="form-check-input" 
+                                       id="emailUpdates" 
+                                       name="emailUpdates">
+                                <label class="form-check-label" for="emailUpdates">
+                                    Send me product updates and tips
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn mb-4">
+                            <i class="bi bi-rocket me-2"></i>Create Account & Start Trial
+                        </button>
+                    </form>
+                    
+                    <div class="text-center mb-4">
+                        <p class="mb-0">Already have an account? 
+                            <a href="/auth/login" class="text-decoration-none fw-semibold" style="color: var(--primary-blue);">
+                                Sign in here
+                            </a>
+                        </p>
+                    </div>
+                    
+                    <!-- Trial Notice -->
+                    <div class="trial-notice">
+                        <div class="d-flex align-items-center justify-content-center mb-2">
+                            <i class="bi bi-gift fs-4 me-2" style="color: var(--primary-blue);"></i>
+                            <strong>14-Day Free Trial</strong>
+                        </div>
+                        <small>
+                            No credit card required • Full feature access • Cancel anytime
+                        </small>
                     </div>
                 </div>
             </div>
@@ -249,73 +318,101 @@
 </div>
 
 <script>
-    // Toggle password visibility
-    document.getElementById('togglePassword').addEventListener('click', function() {
-        const password = document.getElementById('password');
-        const icon = this.querySelector('i');
-        
-        if (password.type === 'password') {
-            password.type = 'text';
-            icon.classList.remove('bi-eye');
-            icon.classList.add('bi-eye-slash');
+// Get account type from URL params or session storage
+const urlParams = new URLSearchParams(window.location.search);
+const selectedAccountType = urlParams.get('accountType') || sessionStorage.getItem('selectedAccountType') || 'individual';
+
+// Account type data
+const accountTypeData = {
+    individual: {
+        icon: 'bi-person',
+        name: 'Individual Account',
+        description: 'Personal networking and career development'
+    },
+    student: {
+        icon: 'bi-mortarboard',
+        name: 'Student Account',
+        description: 'Academic and career networking with special pricing'
+    },
+    business: {
+        icon: 'bi-building',
+        name: 'Business Account',
+        description: 'Team management and advanced features'
+    }
+};
+
+// Update account type display
+function updateAccountTypeDisplay(type) {
+    const data = accountTypeData[type];
+    document.getElementById('accountTypeIcon').className = `bi ${data.icon} fs-4 me-2`;
+    document.getElementById('accountTypeName').textContent = data.name;
+    document.getElementById('accountTypeDesc').textContent = data.description;
+    document.getElementById('accountType').value = type;
+}
+
+// Initialize account type display
+document.addEventListener('DOMContentLoaded', function() {
+    updateAccountTypeDisplay(selectedAccountType);
+    document.getElementById('firstName').focus();
+});
+
+// Toggle password visibility
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const password = document.getElementById('password');
+    const icon = this.querySelector('i');
+    
+    if (password.type === 'password') {
+        password.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    } else {
+        password.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    }
+});
+
+// Password confirmation validation
+document.getElementById('confirmPassword').addEventListener('input', function() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = this.value;
+    
+    if (password !== confirmPassword) {
+        this.setCustomValidity('Passwords do not match');
+        this.style.borderColor = 'var(--danger-color)';
+    } else {
+        this.setCustomValidity('');
+        this.style.borderColor = 'var(--gray-100)';
+    }
+});
+
+// Form submission with loading state
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise bi-spin me-2"></i>Creating Account...';
+    submitBtn.disabled = true;
+    
+    // Re-enable button after 10 seconds if form doesn't redirect
+    setTimeout(() => {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }, 10000);
+});
+
+// Form validation feedback
+document.querySelectorAll('.form-control-custom, .form-control').forEach(input => {
+    input.addEventListener('blur', function() {
+        if (this.checkValidity()) {
+            this.style.borderColor = 'var(--success-green)';
         } else {
-            password.type = 'password';
-            icon.classList.remove('bi-eye-slash');
-            icon.classList.add('bi-eye');
+            this.style.borderColor = 'var(--danger-color)';
         }
     });
     
-    // Password confirmation validation
-    document.getElementById('confirmPassword').addEventListener('input', function() {
-        const password = document.getElementById('password').value;
-        const confirmPassword = this.value;
-        
-        if (password !== confirmPassword) {
-            this.setCustomValidity('Passwords do not match');
-        } else {
-            this.setCustomValidity('');
-        }
+    input.addEventListener('focus', function() {
+        this.style.borderColor = 'var(--primary-blue)';
     });
-    
-    // Form submission with loading state
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        
-        submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise bi-spin me-2"></i>Creating Account...';
-        submitBtn.disabled = true;
-        
-        // Re-enable button after 5 seconds if form doesn't redirect
-        setTimeout(() => {
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }, 5000);
-    });
-    
-    // Plan selection visual feedback
-    document.querySelectorAll('[data-plan]').forEach(card => {
-        card.addEventListener('click', function() {
-            const plan = this.getAttribute('data-plan');
-            const radio = document.getElementById(`plan${plan.charAt(0).toUpperCase() + plan.slice(1)}`);
-            radio.checked = true;
-            
-            // Update visual selection
-            document.querySelectorAll('[data-plan]').forEach(c => {
-                c.style.borderColor = '#000000';
-                c.style.backgroundColor = '';
-            });
-            
-            this.style.borderColor = '#000000';
-            this.style.backgroundColor = '#f8f9fa';
-        });
-    });
-    
-    // Auto-focus first field
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('firstName').focus();
-        
-        // Set initial selection for free plan
-        document.querySelector('[data-plan="free"]').style.borderColor = '#000000';
-        document.querySelector('[data-plan="free"]').style.backgroundColor = '#f8f9fa';
-    });
+});
 </script>

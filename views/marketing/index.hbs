@@ -1,0 +1,630 @@
+{{!-- TAP ME IN! Marketing Homepage --}}
+
+<!-- Marketing-specific CSS -->
+<style>
+:root {
+    --primary-blue: #1e40af;
+    --primary-dark: #1e3a8a;
+    --accent-yellow: #fbbf24;
+    --success-green: #10b981;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+}
+
+.marketing-page {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--primary-blue);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.audience-card {
+    background: var(--gray-50);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 100%;
+}
+
+.audience-card:hover {
+    border-color: var(--primary-blue);
+    transform: translateY(-2px);
+    background: white;
+}
+
+.audience-card.featured {
+    background: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+}
+
+.audience-card.featured:hover {
+    background: var(--primary-dark);
+}
+
+.cta-section {
+    background: var(--gray-900);
+    color: white;
+    padding: 80px 0;
+}
+
+.btn-primary-marketing {
+    background: var(--primary-blue);
+    border: none;
+    color: white;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.btn-primary-marketing:hover {
+    background: var(--primary-dark);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-outline-marketing {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-marketing:hover {
+    background: white;
+    color: var(--primary-blue);
+    text-decoration: none;
+}
+
+.section-padding {
+    padding: 80px 0;
+}
+
+.text-primary-marketing {
+    color: var(--primary-blue);
+}
+
+.bg-gray-light {
+    background-color: var(--gray-50);
+}
+
+.navbar-marketing {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 0;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes connectionPulse {
+    0%, 100% { opacity: 0; height: 100px; }
+    50% { opacity: 1; height: 120px; }
+}
+
+@keyframes cardHover {
+    0%, 100% { transform: rotateY(-5deg) rotateX(5deg) translateY(0px); }
+    50% { transform: rotateY(-2deg) rotateX(2deg) translateY(-5px); }
+}
+
+.nfc-card:hover {
+    animation: cardHover 2s ease-in-out infinite;
+}
+
+.card-stack-container:hover .bg-card:nth-child(2) {
+    transform: translateX(-50%) rotateY(-6deg) rotateX(6deg) !important;
+    transition: transform 0.3s ease;
+}
+
+.card-stack-container:hover .bg-card:nth-child(3) {
+    transform: translateX(-50%) rotateY(-9deg) rotateX(9deg) !important;
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 60px 0;
+    }
+    
+    .section-padding {
+        padding: 60px 0;
+    }
+    
+    .nfc-card {
+        width: 280px !important;
+        height: 170px !important;
+        transform: rotateY(0deg) rotateX(0deg) !important;
+    }
+    
+    .bg-card {
+        display: none;
+    }
+    
+    .floating-indicators {
+        transform: scale(0.8);
+    }
+}
+</style>
+
+<div class="marketing-page">
+    <!-- Navigation -->
+    <nav class="navbar-marketing">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <img src="/images/Logo2-Resized.png" alt="TAP ME IN! Logo" style="height: 50px;" class="me-2">
+                </div>
+                <div class="d-none d-md-flex gap-4">
+                    <a href="#features" class="text-decoration-none text-dark">Features</a>
+                    <a href="#pricing" class="text-decoration-none text-dark">Pricing</a>
+                    <a href="#how-it-works" class="text-decoration-none text-dark">How It Works</a>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="/auth/welcome" class="btn-outline-marketing" style="border-color: var(--primary-blue); color: var(--primary-blue);">Login</a>
+                    <a href="/auth/welcome" class="btn-primary-marketing">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center hero-content">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Tap into your networking skills</h1>
+                    <p class="lead mb-4">
+                        Physical cards that transmit your data by simply tapping them on any smartphone. 
+                        The next level of business cards - helping college students and professionals 
+                        make memorable connections at career fairs, conferences, and networking events.
+                    </p>
+                    <div class="d-flex flex-column flex-sm-row gap-3 mb-5">
+                        <a href="/auth/welcome" class="btn-primary-marketing">
+                            <i class="bi bi-rocket me-2"></i>Start Your Free Trial
+                        </a>
+                        <a href="#how-it-works" class="btn-outline-marketing">
+                            <i class="bi bi-play me-2"></i>See How It Works
+                        </a>
+                    </div>
+                    <div class="d-flex flex-wrap gap-4 text-sm">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle me-2"></i>
+                            <span>14-day free trial</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle me-2"></i>
+                            <span>No credit card required</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle me-2"></i>
+                            <span>Student discounts available</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <div class="position-relative">
+                        <!-- Interactive Card Stack -->
+                        <div class="card-stack-container" style="perspective: 1000px;">
+                            <!-- Main Card -->
+                            <div class="nfc-card main-card" style="background: linear-gradient(135deg, #1e40af, #1e3a8a); width: 320px; height: 200px; border-radius: 16px; margin: 0 auto; display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3); position: relative; overflow: hidden; transform: rotateY(-5deg) rotateX(5deg);">
+                                <!-- Card Background Pattern -->
+                                <div style="position: absolute; top: 0; right: 0; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; transform: translate(30px, -30px);"></div>
+                                <div style="position: absolute; bottom: 0; left: 0; width: 80px; height: 80px; background: rgba(255,255,255,0.05); border-radius: 50%; transform: translate(-20px, 20px);"></div>
+                                
+                                <!-- Card Content -->
+                                <div class="d-flex align-items-center text-white">
+                                    <img src="/images/tmi-logo-single.png" alt="TAP ME IN!" style="width: 40px; height: 40px; margin-right: 12px;">
+                                    <div>
+                                        <div class="fw-bold fs-5">TAP ME IN!</div>
+                                        <small style="opacity: 0.8;">Smart NFC Card</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-white text-end">
+                                    <div class="mb-2">
+                                        <small style="opacity: 0.7;">John Professional</small>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-end">
+                                        <i class="bi bi-wifi fs-4 me-2"></i>
+                                        <span class="small">NFC ENABLED</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Background Cards for Stack Effect -->
+                            <div class="bg-card" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%) rotateY(-8deg) rotateX(8deg); width: 300px; height: 190px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; z-index: -1; opacity: 0.7;"></div>
+                            <div class="bg-card" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%) rotateY(-12deg) rotateX(12deg); width: 280px; height: 180px; background: linear-gradient(135deg, #60a5fa, #3b82f6); border-radius: 16px; z-index: -2; opacity: 0.5;"></div>
+                        </div>
+                        
+                        <!-- Floating Action Indicators -->
+                        <div class="floating-indicators">
+                            <div class="tap-indicator" style="position: absolute; top: -30px; right: -30px; background: var(--accent-yellow); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite;">
+                                <i class="bi bi-hand-index fs-4" style="color: var(--gray-900);"></i>
+                            </div>
+                            
+                            <div class="phone-indicator" style="position: absolute; bottom: -40px; left: -40px; background: white; width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: float 3s ease-in-out infinite;">
+                                <i class="bi bi-phone fs-2" style="color: var(--primary-blue);"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Connection Animation -->
+                        <div class="connection-line" style="position: absolute; top: 50%; left: 50%; width: 2px; height: 100px; background: linear-gradient(to bottom, var(--accent-yellow), transparent); transform: translateX(-50%); animation: connectionPulse 2s ease-in-out infinite;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Audiences -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">Perfect for Every Professional</h2>
+                <p class="lead text-muted">Whether you're starting your career or growing your business, we have the right solution.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="audience-card featured">
+                        <i class="bi bi-mortarboard fs-1 mb-3"></i>
+                        <h4 class="fw-bold mb-3">Students</h4>
+                        <p class="mb-4">Get a head start on networking with special student pricing. Perfect for job fairs, internship hunting, and building professional connections.</p>
+                        <div class="text-sm mb-3">
+                            <div class="mb-1"><i class="bi bi-check me-2"></i>Special student discounts</div>
+                            <div class="mb-1"><i class="bi bi-check me-2"></i>Perfect for job fairs & internships</div>
+                            <div class="mb-1"><i class="bi bi-check me-2"></i>Stand out from other candidates</div>
+                        </div>
+                        <strong>Starting at $9.99</strong>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="audience-card">
+                        <i class="bi bi-person-badge fs-1 mb-3 text-primary-marketing"></i>
+                        <h4 class="fw-bold mb-3">Professionals</h4>
+                        <p class="mb-4">Stand out at conferences, meetings, and networking events. Make memorable first impressions with modern technology.</p>
+                        <div class="text-sm mb-3">
+                            <div class="mb-1"><i class="bi bi-check me-2"></i>Professional analytics</div>
+                            <div class="mb-1"><i class="bi bi-check me-2"></i>Custom profile options</div>
+                            <div class="mb-1"><i class="bi bi-check me-2"></i>Real-time updates</div>
+                        </div>
+                        <strong>Starting at $19.99</strong>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="audience-card">
+                        <i class="bi bi-building fs-1 mb-3 text-primary-marketing"></i>
+                        <h4 class="fw-bold mb-3">Companies</h4>
+                        <p class="mb-4">Equip your entire team with consistent, professional networking tools. Bulk pricing available for organizations.</p>
+                        <div class="text-sm mb-3">
+                            <div class="mb-1"><i class="bi bi-check me-2"></i>Team management</div>
+                            <div class="mb-1"><i class="bi bi-check me-2"></i>Bulk discounts</div>
+                            <div class="mb-1"><i class="bi bi-check me-2"></i>Company branding</div>
+                        </div>
+                        <strong>Custom pricing</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section id="features" class="section-padding bg-gray-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">Why Choose TAP ME IN!</h2>
+                <p class="lead text-muted">Modern technology meets professional networking</p>
+            </div>
+            <div class="row g-4 mb-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-credit-card text-white fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Credit Card Size</h5>
+                        <p class="text-muted">Standard credit card dimensions fit perfectly in any wallet or card holder.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-droplet text-white fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Waterproof</h5>
+                        <p class="text-muted">Made of sturdy, waterproof plastic designed to be durable and professional.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-wifi text-white fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">NFC Technology</h5>
+                        <p class="text-muted">Uses Near Field Communication to transmit data by simply tapping on smartphones.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-phone text-white fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Universal Compatibility</h5>
+                        <p class="text-muted">Works with almost all current smartphones - no app required.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- What Can You Share -->
+            <div class="text-center mb-4">
+                <h3 class="fw-bold mb-3">What Can Your Tap Card Share?</h3>
+                <p class="text-muted">Your tap card can transmit multiple types of data instantly</p>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-2 col-md-4 col-6 text-center">
+                    <i class="bi bi-globe text-primary-marketing fs-2 mb-2"></i>
+                    <small class="d-block">Website/Portfolio</small>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 text-center">
+                    <i class="bi bi-share text-primary-marketing fs-2 mb-2"></i>
+                    <small class="d-block">Social Networks</small>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 text-center">
+                    <i class="bi bi-envelope text-primary-marketing fs-2 mb-2"></i>
+                    <small class="d-block">Email Contact</small>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 text-center">
+                    <i class="bi bi-chat-text text-primary-marketing fs-2 mb-2"></i>
+                    <small class="d-block">SMS Messages</small>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 text-center">
+                    <i class="bi bi-telephone text-primary-marketing fs-2 mb-2"></i>
+                    <small class="d-block">Phone Numbers</small>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 text-center">
+                    <i class="bi bi-geo-alt text-primary-marketing fs-2 mb-2"></i>
+                    <small class="d-block">Business Location</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="section-padding">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">How It Works</h2>
+                <p class="lead text-muted">Getting started is as easy as 1-2-3</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 text-center">
+                    <div class="how-it-works-step mb-4" style="position: relative;">
+                        <div class="step-circle" style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; position: relative; z-index: 2; box-shadow: 0 10px 30px rgba(30, 64, 175, 0.3);">
+                            <span class="text-white fw-bold fs-3">1</span>
+                        </div>
+                        <div class="step-icon" style="position: absolute; top: -10px; right: -10px; background: var(--accent-yellow); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 3;">
+                            <i class="bi bi-cart-plus" style="color: var(--gray-900);"></i>
+                        </div>
+                        <!-- Connection line to next step -->
+                        <div class="d-none d-lg-block" style="position: absolute; top: 50%; right: -50px; width: 100px; height: 2px; background: linear-gradient(to right, var(--primary-blue), var(--gray-100)); z-index: 1;"></div>
+                    </div>
+                    <h5 class="fw-bold mb-3">Order Your Card</h5>
+                    <p class="text-muted">Choose your design and customize your digital profile with your contact information and professional details.</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="how-it-works-step mb-4" style="position: relative;">
+                        <div class="step-circle" style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--success-green), var(--primary-blue)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; position: relative; z-index: 2; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);">
+                            <span class="text-white fw-bold fs-3">2</span>
+                        </div>
+                        <div class="step-icon" style="position: absolute; top: -10px; right: -10px; background: var(--accent-yellow); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 3;">
+                            <i class="bi bi-gear" style="color: var(--gray-900);"></i>
+                        </div>
+                        <!-- Connection line to next step -->
+                        <div class="d-none d-lg-block" style="position: absolute; top: 50%; right: -50px; width: 100px; height: 2px; background: linear-gradient(to right, var(--success-green), var(--gray-100)); z-index: 1;"></div>
+                    </div>
+                    <h5 class="fw-bold mb-3">Activate & Customize</h5>
+                    <p class="text-muted">Receive your card and activate it through our platform. Update your profile anytime with new information.</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="how-it-works-step mb-4" style="position: relative;">
+                        <div class="step-circle" style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--accent-yellow), var(--success-green)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; position: relative; z-index: 2; box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);">
+                            <span class="text-white fw-bold fs-3">3</span>
+                        </div>
+                        <div class="step-icon" style="position: absolute; top: -10px; right: -10px; background: var(--success-green); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 3;">
+                            <i class="bi bi-wifi text-white"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-3">Start Networking</h5>
+                    <p class="text-muted">Simply tap your card on any smartphone to instantly share your contact information and make lasting connections.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Story & Mission -->
+    <section class="section-padding bg-gray-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-4">Founded by Students, For Students</h2>
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="feature-card" style="background: linear-gradient(135deg, rgba(30, 64, 175, 0.05), rgba(16, 185, 129, 0.05)); border: 2px solid rgba(30, 64, 175, 0.1);">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
+                                    <p class="lead mb-4">
+                                        "During my junior year of college, I used these innovative business cards at career fairs 
+                                        and networking events, which helped me secure <strong>three summer internship offers</strong>."
+                                    </p>
+                                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start mb-3">
+                                        <div class="founder-avatar me-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-blue), var(--success-green)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.5rem;">
+                                            SB
+                                        </div>
+                                        <div class="text-start">
+                                            <strong>Samuel Bunker</strong>
+                                            <div class="small text-muted">Founder & CEO</div>
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mb-0">
+                                        We understand that networking can be challenging. That's why we created affordable, 
+                                        tappable business cards that help you stand out and make memorable connections.
+                                    </p>
+                                </div>
+                                <div class="col-lg-4 text-center">
+                                    <!-- Success Visualization -->
+                                    <div class="success-visual">
+                                        <div class="internship-badges">
+                                            <div class="badge-item" style="background: var(--success-green); color: white; padding: 0.5rem 1rem; border-radius: 20px; margin: 0.25rem; display: inline-block; font-size: 0.8rem;">
+                                                <i class="bi bi-building me-1"></i>Internship #1
+                                            </div>
+                                            <div class="badge-item" style="background: var(--primary-blue); color: white; padding: 0.5rem 1rem; border-radius: 20px; margin: 0.25rem; display: inline-block; font-size: 0.8rem;">
+                                                <i class="bi bi-building me-1"></i>Internship #2
+                                            </div>
+                                            <div class="badge-item" style="background: var(--accent-yellow); color: var(--gray-900); padding: 0.5rem 1rem; border-radius: 20px; margin: 0.25rem; display: inline-block; font-size: 0.8rem;">
+                                                <i class="bi bi-building me-1"></i>Internship #3
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <i class="bi bi-trophy fs-1" style="color: var(--accent-yellow);"></i>
+                                            <div class="small text-muted mt-2">3 Offers from NFC Cards</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <h3 class="fw-bold mb-4">Our Mission</h3>
+                <p class="lead mb-5 mx-auto" style="max-width: 600px;">
+                    "We are passionate about helping college students and industry professionals succeed at networking. 
+                    Our innovative NFC cards are conversation starters that help you make memorable first impressions."
+                </p>
+                <div class="row g-4 text-center">
+                    <div class="col-lg-4">
+                        <div class="fs-2 fw-bold text-primary-marketing">10K+</div>
+                        <p class="text-muted">Cards Activated</p>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="fs-2 fw-bold text-primary-marketing">500+</div>
+                        <p class="text-muted">Companies Using</p>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="fs-2 fw-bold text-primary-marketing">95%</div>
+                        <p class="text-muted">Customer Satisfaction</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-4">Ready to Transform Your Networking?</h2>
+            <p class="lead mb-5">Join thousands of professionals who are already making better first impressions.</p>
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mb-4">
+                <a href="/auth/welcome" class="btn btn-light btn-lg">
+                    <i class="bi bi-rocket me-2"></i>Start Your Free Trial
+                </a>
+                <a href="/pricing" class="btn-outline-marketing btn-lg">
+                    <i class="bi bi-currency-dollar me-2"></i>View Pricing
+                </a>
+            </div>
+            <p class="small text-light opacity-75">No credit card required • 14-day free trial • Student discounts available</p>
+        </div>
+    </section>
+</div>
+
+<script>
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Animate audience cards on hover
+document.querySelectorAll('.audience-card').forEach(card => {
+    card.addEventListener('click', function() {
+        // Could add selection logic here for future use
+        window.location.href = '/auth/welcome';
+    });
+});
+</script>

@@ -6,7 +6,10 @@
       "Bash(curl:*)",
       "Bash(npm run lint)",
       "Bash(npm test)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "WebFetch(domain:www.tapmein.online)",
+      "Bash(npm install)",
+      "Bash(node:*)"
     ],
     "defaultMode": "acceptEdits"
   }

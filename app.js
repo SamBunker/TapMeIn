@@ -38,6 +38,7 @@ const interviewRoutes = require('./routes/interviews');
 const categoriesRoutes = require('./routes/categories');
 const activitiesRoutes = require('./routes/activities');
 const dashboardRoutes = require('./routes/dashboard');
+const marketingRoutes = require('./routes/marketing');
 
 // Create Express app
 const app = express();
@@ -224,8 +225,12 @@ app.use('/api/activities', activitiesRoutes);
 // Public routes (no auth required)
 app.use('/tap', tapRoutes);
 
-// Dashboard routes (web interface)
-app.use('/', dashboardRoutes);
+// Marketing routes (homepage and public pages)
+app.use('/', marketingRoutes);
+
+// Dashboard routes (web interface) - moved from root
+app.use('/dashboard', dashboardRoutes);
+app.use('/app', dashboardRoutes); // Alias for existing users
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
