@@ -42,7 +42,7 @@ This document provides a detailed 12-week sprint plan for implementing the NFC C
    - Plan data relationships
    - Set up validation rules
 
-3. **Security & Authentication Specialist**
+3. **Security & Authentication Specialist**p
    - Design authentication flow
    - Plan security middleware
    - Set up JWT system

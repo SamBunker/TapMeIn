@@ -1,0 +1,58 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.production
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose*.yml
+Dockerfile
+.dockerignore
+
+# Testing
+coverage
+*.log
+*.test.js
+*.spec.js
+__tests__
+test
+tests
+
+# Development files
+*.md
+!README.md
+docs
+
+# Build artifacts
+dist
+build
+.cache
+
+# Uploads (will be in volume)
+uploads/*
+
+# Claude
+.claude
+CLAUDE.md

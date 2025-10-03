@@ -1,0 +1,148 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: tapmeinnfc-mongo-prod
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-changeme}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE:-tapmeinnfc}
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - tapmeinnfc-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7.2-alpine
+    container_name: tapmeinnfc-redis-prod
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - tapmeinnfc-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # TapMeIn Application
+  tapmeinnfc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    pull_policy: build
+    container_name: tapmeinnfc-app-prod
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-3001}:${CONTAINER_PORT:-3000}"
+    environment:
+      # Application
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${CONTAINER_PORT:-3000}
+      - BASE_URL=${BASE_URL:-http://localhost:3001}
+
+      # Database
+      - MONGODB_URI=mongodb://${MONGO_USERNAME:-admin}:${MONGO_PASSWORD:-changeme}@mongodb:27017/${MONGO_DATABASE:-tapmeinnfc}?authSource=admin
+      - REDIS_URL=redis://redis:6379
+
+      # Authentication
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - JWT_EXPIRE=${JWT_EXPIRE:-24h}
+      - JWT_REFRESH_EXPIRE=${JWT_REFRESH_EXPIRE:-7d}
+      - SESSION_SECRET=${SESSION_SECRET}
+
+      # Email Service (SendGrid)
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - FROM_EMAIL=${FROM_EMAIL:-noreply@tapmeinnfc.com}
+      - FROM_NAME=${FROM_NAME:-TapMeIn NFC}
+
+      # SMS Service (Twilio)
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+
+      # Payment Processing (Stripe)
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+
+      # Geolocation Service
+      - IPINFO_API_KEY=${IPINFO_API_KEY}
+
+      # AI Service (OpenAI)
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4}
+
+      # Feature Flags
+      - ENABLE_SMS=${ENABLE_SMS:-false}
+      - ENABLE_WEBHOOKS=${ENABLE_WEBHOOKS:-false}
+      - ENABLE_AI_EMAIL=${ENABLE_AI_EMAIL:-false}
+      - ENABLE_CALENDAR_INTEGRATION=${ENABLE_CALENDAR_INTEGRATION:-false}
+
+      # Trial Configuration
+      - TRIAL_DAYS=${TRIAL_DAYS:-14}
+      - GRACE_PERIOD_DAYS=${GRACE_PERIOD_DAYS:-3}
+
+      # Rate Limiting
+      - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS:-900000}
+      - RATE_LIMIT_MAX_REQUESTS=${RATE_LIMIT_MAX_REQUESTS:-100}
+
+      # File Upload
+      - MAX_FILE_SIZE=${MAX_FILE_SIZE:-5242880}
+      - UPLOAD_PATH=/usr/src/app/uploads
+
+      # Monitoring & Logging
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - SENTRY_DSN=${SENTRY_DSN}
+
+      # Admin User
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+    volumes:
+      - uploads_data:/usr/src/app/uploads
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - tapmeinnfc-network
+      - d-nginx_default
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:${CONTAINER_PORT:-3000}/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+
+volumes:
+  mongodb_data:
+    driver: local
+  mongodb_config:
+    driver: local
+  redis_data:
+    driver: local
+  uploads_data:
+    driver: local
+
+networks:
+  tapmeinnfc-network:
+    driver: bridge
+  d-nginx_default:
+    external: true
