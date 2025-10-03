@@ -1,0 +1,191 @@
+name: Deploy to Portainer (Advanced)
+
+# Advanced version with notifications and rollback support
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.gitignore'
+  workflow_dispatch:
+    inputs:
+      skip_health_check:
+        description: 'Skip health check verification'
+        required: false
+        default: 'false'
+
+jobs:
+  deploy:
+    name: Deploy TapMeIn to Production
+    runs-on: self-hosted
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set deployment variables
+        id: vars
+        run: |
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "commit_message=$(git log -1 --pretty=%B | head -n1)" >> $GITHUB_OUTPUT
+          echo "timestamp=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
+          echo "author=$(git log -1 --pretty=format:'%an')" >> $GITHUB_OUTPUT
+
+      - name: Pre-deployment notification
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🚀 Starting Deployment"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📅 Time: ${{ steps.vars.outputs.timestamp }}"
+          echo "👤 Author: ${{ steps.vars.outputs.author }}"
+          echo "📦 Commit: ${{ steps.vars.outputs.sha_short }}"
+          echo "📝 Message: ${{ steps.vars.outputs.commit_message }}"
+          echo "🌐 Target: https://tapmein.sambunker.com"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+      - name: Check application health (pre-deploy)
+        id: pre_health
+        continue-on-error: true
+        run: |
+          echo "🔍 Checking current application status..."
+          if curl -f -s http://192.168.0.148:3001/api/health > /dev/null 2>&1; then
+            echo "✅ Application is currently running"
+            echo "status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Application not responding (this is ok for first deployment)"
+            echo "status=down" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger Portainer webhook
+        id: webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
+        run: |
+          echo "⏳ Triggering Portainer stack update..."
+
+          response=$(curl -s -w "\n%{http_code}" -X POST "${WEBHOOK_URL:-http://192.168.0.148:9000/api/stacks/webhooks/203560cc-cdf9-48b4-83df-aae57dbd6572}")
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | head -n -1)
+
+          echo "Response code: $http_code"
+
+          if [ "$http_code" = "200" ] || [ "$http_code" = "204" ]; then
+            echo "✅ Portainer webhook accepted"
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Webhook failed with code: $http_code"
+            echo "Response: $body"
+            echo "success=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Wait for container restart
+        run: |
+          echo "⏳ Waiting for containers to pull and restart..."
+          echo "This may take 1-2 minutes depending on image size..."
+          sleep 60
+
+      - name: Verify deployment health
+        if: github.event.inputs.skip_health_check != 'true'
+        timeout-minutes: 5
+        run: |
+          echo "🔍 Verifying new deployment..."
+          max_attempts=20
+          attempt=1
+
+          while [ $attempt -le $max_attempts ]; do
+            echo "[$attempt/$max_attempts] Checking application health..."
+
+            if response=$(curl -f -s http://192.168.0.148:3001/api/health 2>&1); then
+              echo "✅ Application is responding!"
+              echo "Response: $response"
+
+              # Verify it's actually healthy
+              if echo "$response" | grep -q '"status":"OK"'; then
+                echo "✅ Health check passed - deployment successful!"
+                exit 0
+              else
+                echo "⚠️ Application responding but health status unexpected"
+              fi
+            fi
+
+            if [ $attempt -lt $max_attempts ]; then
+              echo "⏳ Waiting 15 seconds before retry..."
+              sleep 15
+            fi
+
+            attempt=$((attempt + 1))
+          done
+
+          echo "❌ Health check timeout after 5 minutes"
+          echo "Deployment may have failed - manual verification required"
+          exit 1
+
+      - name: Run smoke tests
+        if: success()
+        continue-on-error: true
+        run: |
+          echo "🧪 Running smoke tests..."
+
+          # Test homepage
+          echo "Testing homepage..."
+          if curl -f -s -o /dev/null http://192.168.0.148:3001/; then
+            echo "✅ Homepage accessible"
+          else
+            echo "⚠️ Homepage not accessible"
+          fi
+
+          # Test API endpoint
+          echo "Testing API..."
+          if curl -f -s -o /dev/null http://192.168.0.148:3001/api; then
+            echo "✅ API accessible"
+          else
+            echo "⚠️ API not accessible"
+          fi
+
+      - name: Deployment success notification
+        if: success()
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ Deployment Successful!"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📦 Version: ${{ steps.vars.outputs.sha_short }}"
+          echo "📝 Message: ${{ steps.vars.outputs.commit_message }}"
+          echo "👤 Deployed by: ${{ steps.vars.outputs.author }}"
+          echo "⏰ Time: ${{ steps.vars.outputs.timestamp }}"
+          echo ""
+          echo "🌐 Application URLs:"
+          echo "   • Public: https://tapmein.sambunker.com"
+          echo "   • Health: http://192.168.0.148:3001/api/health"
+          echo "   • Admin: https://tapmein.sambunker.com/admin"
+          echo ""
+          echo "📊 Next Steps:"
+          echo "   • Monitor logs: docker logs tapmeinnfc-app-prod -f"
+          echo "   • Check metrics: https://tapmein.sambunker.com/admin"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+      - name: Deployment failure notification
+        if: failure()
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "❌ Deployment Failed!"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📦 Attempted version: ${{ steps.vars.outputs.sha_short }}"
+          echo "⏰ Time: ${{ steps.vars.outputs.timestamp }}"
+          echo ""
+          echo "🔍 Troubleshooting:"
+          echo "   • Check Portainer: http://192.168.0.148:9000"
+          echo "   • View logs: docker logs tapmeinnfc-app-prod"
+          echo "   • Check webhook: Is Portainer accessible?"
+          echo "   • Verify network: Can runner reach Portainer?"
+          echo ""
+          echo "🔄 Rollback:"
+          echo "   • Previous version may still be running"
+          echo "   • Check Portainer for stack status"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

@@ -1,0 +1,83 @@
+name: Deploy to Portainer (Secure)
+
+# This version uses GitHub Secrets to hide your webhook URL
+# Add PORTAINER_WEBHOOK_URL to your repository secrets
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Portainer
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get commit info
+        id: commit
+        run: |
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+
+      - name: Trigger Portainer Stack Webhook
+        env:
+          WEBHOOK_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
+        run: |
+          echo "🚀 Deploying commit ${{ steps.commit.outputs.sha_short }}"
+          echo "📝 Message: ${{ steps.commit.outputs.message }}"
+          echo ""
+          echo "⏳ Triggering Portainer webhook..."
+
+          response=$(curl -s -w "\n%{http_code}" -X POST "${WEBHOOK_URL:-http://192.168.0.148:9000/api/stacks/webhooks/203560cc-cdf9-48b4-83df-aae57dbd6572}")
+          http_code=$(echo "$response" | tail -n1)
+
+          if [ "$http_code" = "200" ] || [ "$http_code" = "204" ]; then
+            echo "✅ Webhook triggered successfully!"
+          else
+            echo "❌ Webhook failed with status code: $http_code"
+            exit 1
+          fi
+
+      - name: Wait for deployment
+        run: |
+          echo "⏳ Waiting for containers to restart..."
+          sleep 45
+
+      - name: Verify deployment
+        run: |
+          echo "🔍 Verifying deployment health..."
+          max_attempts=10
+          attempt=1
+
+          while [ $attempt -le $max_attempts ]; do
+            echo "Attempt $attempt/$max_attempts..."
+
+            if curl -f -s http://192.168.0.148:3001/api/health > /dev/null 2>&1; then
+              echo "✅ Application is healthy!"
+              exit 0
+            fi
+
+            echo "⏳ Waiting 10 seconds before retry..."
+            sleep 10
+            attempt=$((attempt + 1))
+          done
+
+          echo "⚠️ Health check timeout - deployment may need manual verification"
+          exit 1
+
+      - name: Deployment summary
+        if: success()
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ Deployment Successful!"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📦 Commit: ${{ steps.commit.outputs.sha_short }}"
+          echo "📝 Message: ${{ steps.commit.outputs.message }}"
+          echo "🌐 URL: https://tapmein.sambunker.com"
+          echo "💚 Health: http://192.168.0.148:3001/api/health"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

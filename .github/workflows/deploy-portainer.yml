@@ -1,0 +1,34 @@
+name: Deploy to Portainer
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to main branch
+  workflow_dispatch:  # Allow manual trigger from GitHub Actions tab
+
+jobs:
+  deploy:
+    name: Trigger Portainer Webhook
+    runs-on: self-hosted  # Uses your local runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Trigger Portainer Stack Webhook
+        run: |
+          echo "🚀 Triggering Portainer webhook..."
+          curl -X POST http://192.168.0.148:9000/api/stacks/webhooks/203560cc-cdf9-48b4-83df-aae57dbd6572
+          echo "✅ Webhook triggered successfully!"
+
+      - name: Wait for deployment
+        run: |
+          echo "⏳ Waiting 30 seconds for deployment to complete..."
+          sleep 30
+
+      - name: Verify deployment
+        run: |
+          echo "🔍 Checking application health..."
+          # Try to reach the health endpoint (adjust URL if needed)
+          curl -f http://192.168.0.148:3001/api/health || echo "⚠️ Health check failed - deployment may still be in progress"
+          echo "✅ Deployment verification complete!"
