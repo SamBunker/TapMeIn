@@ -7,7 +7,7 @@ services:
     container_name: tapmeinnfc-mongo-prod
     restart: unless-stopped
     ports:
-      - "${MONGO_PORT:-13003}:13003"
+      - "${MONGO_PORT:-13003}:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-admin}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
@@ -18,7 +18,7 @@ services:
     networks:
       - tapmeinnfc-network
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:${MONGO_PORT}/test --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
       interval: 10s
       timeout: 5s
       retries: 5
@@ -57,7 +57,7 @@ services:
       - BASE_URL=${BASE_URL:-http://localhost:3001}
 
       # Database
-      - MONGODB_URI=mongodb://${MONGO_USERNAME:-admin}:${MONGO_PASSWORD:-changeme}@mongodb:${MONGO_PORT}/${MONGO_DATABASE:-tapmeinnfc}?authSource=admin
+      - MONGODB_URI=mongodb://${MONGO_USERNAME:-admin}:${MONGO_PASSWORD:-changeme}@mongodb:27017/${MONGO_DATABASE:-tapmeinnfc}?authSource=admin
       - REDIS_URL=redis://redis:6379
 
       # Authentication
