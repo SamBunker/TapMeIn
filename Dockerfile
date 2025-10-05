@@ -29,11 +29,11 @@ COPY . .
 RUN mkdir -p uploads && chmod 755 uploads
 
 # Step 9: Expose the port that the app will run on
-EXPOSE 3000
+EXPOSE 3001
 
 # Step 10: Health check to ensure container is running properly
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+    CMD node -e "require('http').get('http://localhost:3001/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
 # Step 11: Define the command to run your application
 CMD ["node", "app.js"]
